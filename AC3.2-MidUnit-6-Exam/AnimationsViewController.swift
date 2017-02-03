@@ -27,7 +27,6 @@ class AnimationsViewController: UIViewController, CellTitled {
     
     var bouncyViews: [UIView] = [] // use this to store any views you add for the gravity/bounce animation
     
-    
     // MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -161,78 +160,118 @@ class AnimationsViewController: UIViewController, CellTitled {
     // MARK: - Dynamics
     internal func setupBehaviorsAndAnimators() {
         // 1. Instantiate your dynamicAnimator
-        
+        self.dynamicAnimator = UIDynamicAnimator(referenceView: self.view)
         // 2. Instantiate/setup your behaviors
         //      a. Collision
-        
+        collisionBehavior = UICollisionBehavior()
+        collisionBehavior?.translatesReferenceBoundsIntoBoundary = true
         //      b. Gravity
-        
+        gravityBehavior = UIGravityBehavior()
+        gravityBehavior?.magnitude = 0.5
         //      c. Bounce
-        
+        bounceBehavior = UIDynamicItemBehavior()
         // 3. Add your behaviors to the dynamic animator
-
+        dynamicAnimator?.addBehavior(collisionBehavior!)
+        dynamicAnimator?.addBehavior(gravityBehavior!)
+        dynamicAnimator?.addBehavior(bounceBehavior!)
     }
     
     // MARK: Slide Animations
     internal func addSlidingAnimationToUsername() {
-        
         // 1. Add in animation for just the usernameContainerView here (the textField is a subview, so it will animate with it)
+        springPropertyAnimator?.addAnimations {
+            self.usernameContainerView.snp.remakeConstraints({ (view) in
+                view.centerX.equalToSuperview()
+                view.width.equalToSuperview().multipliedBy(0.8)
+                view.height.equalTo(44.0)
+                view.top.equalTo(self.fireDatabaseLogo.snp.bottom).offset(24.0)
+            })
+           self.view.layoutIfNeeded()
+        }
+        
         //  Note: You must use constraints to do this animation
         //  Reminder: You need to call something self.view in order to apply the new constraints
-        
     }
     
     internal func addSlidingAnimationToPassword() {
-        
         // 1. Add in animation for just the passwordContainerView here (the textField is a subview, so it will animate with it)
+        springPropertyAnimator?.addAnimations({
+            self.passwordContainerView.snp.remakeConstraints { (view) in
+                view.width.equalTo(self.usernameContainerView.snp.width)
+                view.height.equalTo(self.usernameContainerView.snp.height)
+                view.top.equalTo(self.usernameContainerView.snp.bottom).offset(16.0)
+                view.centerX.equalToSuperview()
+            }
+            self.view.layoutIfNeeded()
+        }, delayFactor: 0.1)
+        
         //  Note: You must use constraints to do this animation
         //  Reminder: You need to call something self.view in order to apply the new constraints
         //  Reminder: There is a small delay you need to account for
-        
     }
     
     internal func addSlidingAnimationToLoginButton() {
-        
         // 1. Add in animation for just the login button
+        springPropertyAnimator?.addAnimations({ 
+            self.loginButton.snp.remakeConstraints { (view) in
+                view.top.equalTo(self.passwordContainerView.snp.bottom).offset(32.0)
+                view.centerX.equalToSuperview()
+            }
+            
+            self.view.layoutIfNeeded()
+            
+        }, delayFactor: 0.2)
+        
         //  Note: You must use constraints to do this animation
         //  Reminder: You need to call something self.view in order to apply the new constraints
         //  Reminder: There is a small delay you need to account for
-        
     }
     
     internal func startSlidingAnimations() {
-
         // 1. Begin the animations
-    
+        springPropertyAnimator?.startAnimation()
     }
     
     // MARK:  Scale & Fade-In Logo
     internal func animateLogo() {
         // 1. Ensure the scale and alpha are set properly prior to animating
-        
+        fireDatabaseLogo.alpha = 0
+        fireDatabaseLogo.transform = CGAffineTransform(scaleX: 0, y: 0)
         // 2. Add the animations
-        
+        springPropertyAnimator?.addAnimations {
+            self.fireDatabaseLogo.alpha = 1
+            self.fireDatabaseLogo.transform = CGAffineTransform.identity
+        }
     }
     
     // MARK: - Actions
     internal func didTapLogin(sender: UIButton) {
-        
         // 1. instantiate a new view (Provided for you!)
         let newView = UIView()
+        var randomVelocity: CGFloat{
+            let degree = CGFloat.pi / CGFloat(arc4random_uniform(100) + 12)
+            return degree
+        }
         newView.backgroundColor = UIColor(red: CGFloat(drand48()), green: CGFloat(drand48()), blue: CGFloat(drand48()), alpha: 1.0)
         newView.layer.cornerRadius = 20.0
         bouncyViews.append(newView)
-        
         // 2. add it to the view hierarchy
-        
+        view.addSubview(newView)
         // 3. add constraints (make it 40.0 x 40.0)
-    
-        // 4. Add the view to your behaviors
-        
-        // 5. (Extra Credit) Add a random angular velocity (between 0 and 15 degrees) to the bounceBehavior
+        newView.snp.makeConstraints { (view) in
+            view.top.equalTo(self.loginButton.snp.bottom)
+            view.centerX.equalToSuperview()
+            view.size.equalTo(CGSize(width: 40, height: 40))
+        }
+        view.layoutIfNeeded()
 
+        // 4. Add the view to your behaviors
+        collisionBehavior?.addItem(newView)
+        gravityBehavior?.addItem(newView)
+        bounceBehavior?.addItem(newView)
+        // 5. (Extra Credit) Add a random angular velocity (between 0 and 15 degrees) to the bounceBehavior
+        bounceBehavior?.addAngularVelocity(randomVelocity, for: newView)
     }
-    
     
     // MARK: - ⛔️EXAM ENDS HERE⛔️ -
     
