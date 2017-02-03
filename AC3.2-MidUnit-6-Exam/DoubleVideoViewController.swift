@@ -55,7 +55,7 @@ class DoubleVideoViewController: UIViewController, CellTitled, UIImagePickerCont
         // recall that, by default, this array only contains static pix...
         imagePickerController.mediaTypes = [String(kUTTypeMovie)]
         imagePickerController.delegate = self
-        imagePickerController.present(imagePickerController, animated: true, completion: nil)
+        self.present(imagePickerController, animated: true, completion: nil)
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
