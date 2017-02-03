@@ -50,15 +50,20 @@ class DoubleVideoViewController: UIViewController, CellTitled, UIImagePickerCont
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         if let url = info[UIImagePickerControllerReferenceURL] as? URL {
                 self.movieURL = url
+            print(url.absoluteString)
         }
         dismiss(animated: true) {
             if let url = self.movieURL {
                 let playerItem = AVPlayerItem(url: url)
-                
                 self.player = AVPlayer(playerItem: playerItem)
-                
                 let playerLayer = AVPlayerLayer(player: self.player)
+        
+            
                 self.videoContainerBottom.layer.addSublayer(playerLayer)
+                
+                playerLayer.frame = self.videoContainerBottom.bounds
+                self.player?.playImmediately(atRate: 1.0)
+                
             }
         }
         
