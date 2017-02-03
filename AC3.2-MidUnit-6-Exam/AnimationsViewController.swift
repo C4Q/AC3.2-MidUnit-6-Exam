@@ -166,22 +166,22 @@ class AnimationsViewController: UIViewController, CellTitled {
         // 2. Instantiate/setup your behaviors
         
         //      a. Collision
-        collisionBehavior = UICollisionBehavior(items: [] )
+        collisionBehavior = UICollisionBehavior(items: bouncyViews )
         collisionBehavior?.translatesReferenceBoundsIntoBoundary = true
         
         //      b. Gravity
-        gravityBehavior = UIGravityBehavior(items: [])
+        gravityBehavior = UIGravityBehavior(items: bouncyViews)
         gravityBehavior?.angle = CGFloat.pi / 2.0
         
         //      c. Bounce
-        bounceBehavior = UIDynamicItemBehavior(items: [])
+        bounceBehavior = UIDynamicItemBehavior(items: bouncyViews)
         bounceBehavior?.elasticity = 0.5
 
 
         // 3. Add your behaviors to the dynamic animator
-        dynamicAnimator?.addBehavior(collisionBehavior!)
-        dynamicAnimator?.addBehavior(gravityBehavior!)
-        dynamicAnimator?.addBehavior(bounceBehavior!)
+        self.dynamicAnimator?.addBehavior(collisionBehavior!)
+        self.dynamicAnimator?.addBehavior(gravityBehavior!)
+        self.dynamicAnimator?.addBehavior(bounceBehavior!)
     }
     
     // MARK: Slide Animations
@@ -279,9 +279,10 @@ class AnimationsViewController: UIViewController, CellTitled {
             view.centerX.equalTo(loginButton.snp.centerX)
         })
         // 4. Add the view to your behaviors
-//        gravityBehavior?.addItem(newView)
-//        collisionBehavior?.addItem(newView)
-//        bounceBehavior?.addItem(newView)
+        self.view.layoutIfNeeded()
+        gravityBehavior?.addItem(newView)
+        collisionBehavior?.addItem(newView)
+        bounceBehavior?.addItem(newView)
 //        collisionBehavior?.addItem(bouncyViews as! UIDynamicItem)
 //        bounceBehavior?.addItem(bouncyViews as! UIDynamicItem)
         // 5. (Extra Credit) Add a random angular velocity (between 0 and 15 degrees) to the bounceBehavior

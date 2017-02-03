@@ -1,4 +1,4 @@
-/*
+    /*
  
  Use UIImagePickerController to pick the video from the library.
  Use the AVPlayerItem, AVPlayer, and AVPlayerLayer objects to take the chosen video and display it. Remember,imagePickerController(_:didFinishPickingMediaWithInfo:) will give you a URL for Movies and that can be used to construct an AVPlayerItem.
@@ -20,23 +20,20 @@ class DoubleVideoViewController: UIViewController, CellTitled, UIImagePickerCont
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        videoContainerTop.backgroundColor = .red
-        videoContainerBottom.backgroundColor = .blue
-    
+      
         // don't f with this line
         self.edgesForExtendedLayout = UIRectEdge(rawValue: 0)
     }
 
     override func viewDidLayoutSubviews() {
         // update your layers' frames here
-        guard let sublayers = self.videoContainerTop.layer.sublayers
+        guard let sublayers = self.videoContainerBottom.layer.sublayers
             else {
                 return
         }
         
         for layer in sublayers {
-            layer.frame = self.videoContainerTop.bounds
+            layer.frame = self.videoContainerBottom.bounds
         }
     }
     
@@ -51,23 +48,21 @@ class DoubleVideoViewController: UIViewController, CellTitled, UIImagePickerCont
     
     // MARK: - UIImagePickerControllerDelegate
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-//        switch info[UIImagePickerControllerMediaType] as! String {
         if let url = info[UIImagePickerControllerReferenceURL] as? URL {
-            self.movieURL = url
+                self.movieURL = url
         }
         dismiss(animated: true) {
             if let url = self.movieURL {
                 let playerItem = AVPlayerItem(url: url)
+                
                 self.player = AVPlayer(playerItem: playerItem)
+                
                 let playerLayer = AVPlayerLayer(player: self.player)
-                
-                self.videoContainerTop.layer.addSublayer(playerLayer)
-                self.videoContainerTop.backgroundColor = .yellow
-                
-                print("WORKED")
+                self.videoContainerBottom.layer.addSublayer(playerLayer)
             }
         }
         
         
     }
+
 }
