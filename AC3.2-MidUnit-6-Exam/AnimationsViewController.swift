@@ -168,16 +168,17 @@ class AnimationsViewController: UIViewController, CellTitled {
         // 2. Instantiate/setup your behaviors
         //      a. Collision
         collisionBehavior?.translatesReferenceBoundsIntoBoundary = true
+        //self.dynamicAnimator?.addBehavior(collisionBehavior!)
         
         //      b. Gravity
         gravityBehavior = UIGravityBehavior(items: bouncyViews)
-        self.dynamicAnimator?.addBehavior(gravityBehavior!)
         
         //      c. Bounce
-        //self.dynamicAnimator?.addBehavior(bounceBehavior!)
         
         // 3. Add your behaviors to the dynamic animator
-        
+//        self.dynamicAnimator?.addBehavior(collisionBehavior!)
+//        self.dynamicAnimator?.addBehavior(gravityBehavior!)
+//        self.dynamicAnimator?.addBehavior(bounceBehavior!)
 
     }
     
@@ -241,7 +242,9 @@ class AnimationsViewController: UIViewController, CellTitled {
     internal func startSlidingAnimations() {
 
         // 1. Begin the animations
-    
+//        UIView.animate(withDuration: 0.5, delay: 0.4, options: .autoreverse, animations: {
+//            self.usernameContainerView.center.x += self.view.bounds.width
+//        }, completion: nil)
     }
     
     // MARK:  Scale & Fade-In Logo
@@ -276,8 +279,7 @@ class AnimationsViewController: UIViewController, CellTitled {
         })
     
         // 4. Add the view to your behaviors
-        collisionBehavior = UICollisionBehavior(items: [newView])
-        //dynamicAnimator?.addBehavior(collisionBehavior!)
+        
         
         
         // 5. (Extra Credit) Add a random angular velocity (between 0 and 15 degrees) to the bounceBehavior

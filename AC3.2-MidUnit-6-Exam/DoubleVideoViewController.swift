@@ -66,8 +66,9 @@ class DoubleVideoViewController: UIViewController, CellTitled, UIImagePickerCont
                         let playerLayer = AVPlayerLayer(player: self.player)
                         playerLayer.frame = self.videoContainerTop.bounds
                         self.videoContainerTop.layer.addSublayer(playerLayer)
+                        NotificationCenter.default.addObserver(self, selector: #selector(playerDidFinishPlaying), name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: player.currentItem)
                     }
-                } else {
+                } else if secondVideoURL == nil {
                     self.secondVideoURL = url
                     if let url = secondVideoURL {
                         let playerItem = AVPlayerItem(url: url)
@@ -75,6 +76,7 @@ class DoubleVideoViewController: UIViewController, CellTitled, UIImagePickerCont
                         let playerLayer = AVPlayerLayer(player: self.player)
                         playerLayer.frame = self.videoContainerBottom.bounds
                         self.videoContainerBottom.layer.addSublayer(playerLayer)
+                        NotificationCenter.default.addObserver(self, selector: #selector(playerDidFinishPlaying), name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: player.currentItem)
                     }
                 }
                 dismiss(animated: true) {
@@ -86,6 +88,12 @@ class DoubleVideoViewController: UIViewController, CellTitled, UIImagePickerCont
         default:
             print("Bad media type")
         }
+    }
+    
+    func playerDidFinishPlaying(note: NSNotification) {
+        print("Video Finished")
+        
+        //http://stackoverflow.com/questions/29386531/how-to-detect-when-avplayer-video-ends-playing/29388401
     }
     
 }
