@@ -28,7 +28,7 @@ class DoubleVideoViewController: UIViewController, CellTitled, UIImagePickerCont
     override func viewDidLayoutSubviews() {
         // update your layers' frames here
         
-        /* 
+        /*
          Thi stuff is partially from https://github.com/martyav/AC3.2-AVPlayerKVO/blob/master/AVPlayerKVO/ViewController.swift but altered to fit the part
          */
         
@@ -68,10 +68,10 @@ class DoubleVideoViewController: UIViewController, CellTitled, UIImagePickerCont
             
             // looking at http://stackoverflow.com/questions/29000251/swift-resize-an-avplayerlayer-to-match-the-bounds-of-its-parent-container
             
-//            self.videoContainerTop.layer.addSublayer(playerLayer)
-//            playerLayer.frame = videoContainerTop.bounds
-//            
-//            player.play()
+            //            self.videoContainerTop.layer.addSublayer(playerLayer)
+            //            playerLayer.frame = videoContainerTop.bounds
+            //
+            //            player.play()
             
             if self.videoContainerTop.layer.sublayers == nil && self.videoContainerBottom.layer.sublayers == nil {
                 self.videoContainerTop.layer.addSublayer(playerLayer)
@@ -82,24 +82,36 @@ class DoubleVideoViewController: UIViewController, CellTitled, UIImagePickerCont
                 playerLayer.frame = videoContainerBottom.bounds
                 player.play()
             } else {
-                dismiss(animated: true) {
-                    if let url = self.movieURL {
-                        let player = AVPlayer(url: url)
-                        let playerController = AVPlayerViewController()
-                        playerController.player = player
+                
+//                note: i know we can use the player's rate to check if something is playing, but how do we keep track of which player is playing in which container view?
+                
+//                pseudo code nonsense -- if the player in the top is playing and the player in the bottom is not playing, do this {
+//
+//                } else if the player in the top is not playing, and the bottom player is playing, do that {
+//                    
+//                } else {
+                
+                    dismiss(animated: true) {
+                        if let url = self.movieURL {
+                            let player = AVPlayer(url: url)
+                            let playerController = AVPlayerViewController()
+                            playerController.player = player
+                        }
                     }
+                    
+                    // taken from my emojiCard project: https://github.com/martyav/EmojiDeck/blob/master/EmojiDeck/EmojiCardViewController.swift
+                    
+                    let alertController = UIAlertController(title: "Hey there, pal!", message: "You can't watch a video right now.", preferredStyle: UIAlertControllerStyle.alert)
+                    let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default) { (result : UIAlertAction) -> Void in
+                        print("OK")
+                    }
+                    alertController.addAction(okAction)
+                    self.present(alertController, animated: true, completion: nil)
+                    
+                    print("you can't watch more than two videos")
+                    return
                 }
-                
-                let alertController = UIAlertController(title: "Hey there, pal!", message: "You can't watch a video right now.", preferredStyle: UIAlertControllerStyle.alert)
-                let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default) { (result : UIAlertAction) -> Void in
-                    print("OK")
-                }
-                alertController.addAction(okAction)
-                self.present(alertController, animated: true, completion: nil)
-                
-                print("you can't watch more than two videos")
-                return
-            }
+            //}
         }
         
         // dismissing imagePickerController
