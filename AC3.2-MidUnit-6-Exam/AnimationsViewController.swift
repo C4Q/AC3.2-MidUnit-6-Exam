@@ -158,60 +158,132 @@ class AnimationsViewController: UIViewController, CellTitled {
     // MARK: -✅🎉 EXAM STARTS HERE 🎉✅-
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    var animationDuration = 2.0
+    let textFieldAnimator = UIViewPropertyAnimator(duration: 2.0, dampingRatio: 0.75, animations: nil)
+    let passwordAnimator = UIViewPropertyAnimator(duration: 1.0 , curve: .easeInOut , animations: nil)
+    
+    let loginAnimator = UIViewPropertyAnimator(duration: 3.0, dampingRatio: 0.75, animations: nil)
+    
+    
     // MARK: - Dynamics
     internal func setupBehaviorsAndAnimators() {
         // 1. Instantiate your dynamicAnimator
+        self.dynamicAnimator = UIDynamicAnimator(referenceView: self.view)
         
         // 2. Instantiate/setup your behaviors
         //      a. Collision
+            collisionBehavior = UICollisionBehavior()
+                collisionBehavior?.translatesReferenceBoundsIntoBoundary = true
         
         //      b. Gravity
+                gravityBehavior = UIGravityBehavior()
+                gravityBehavior?.magnitude = 1.0
         
         //      c. Bounce
+            bounceBehavior = UIDynamicItemBehavior()
+            bounceBehavior?.elasticity = 0.2
+//        elasticBehavior.addAngularVelocity(CGFloat.pi / 6.0, for: items.first!)
+
         
         // 3. Add your behaviors to the dynamic animator
+        self.dynamicAnimator?.addBehavior(collisionBehavior!)
+        self.dynamicAnimator?.addBehavior(gravityBehavior!)
+       self.dynamicAnimator?.addBehavior(bounceBehavior!)
 
     }
     
     // MARK: Slide Animations
     internal func addSlidingAnimationToUsername() {
         
-        // 1. Add in animation for just the usernameContainerView here (the textField is a subview, so it will animate with it)
-        //  Note: You must use constraints to do this animation
-        //  Reminder: You need to call something self.view in order to apply the new constraints
+        usernameContainerView.snp.remakeConstraints { (view) in
+            view.width.equalToSuperview().multipliedBy(0.8)
+            view.height.equalTo(44.0)
+            view.top.equalTo(fireDatabaseLogo.snp.bottom).offset(24.0)
+            view.centerX.equalToSuperview()
+        }
+        
+        textFieldAnimator.addAnimations {
+            self.view.layoutIfNeeded()
+        }
+        
+        textFieldAnimator.startAnimation()
+      
         
     }
     
     internal func addSlidingAnimationToPassword() {
         
-        // 1. Add in animation for just the passwordContainerView here (the textField is a subview, so it will animate with it)
-        //  Note: You must use constraints to do this animation
-        //  Reminder: You need to call something self.view in order to apply the new constraints
-        //  Reminder: There is a small delay you need to account for
+        passwordContainerView.snp.remakeConstraints { (view) in
+            view.width.equalTo(usernameContainerView.snp.width)
+            view.height.equalTo(usernameContainerView.snp.height)
+            view.top.equalTo(usernameContainerView.snp.bottom).offset(16.0)
+            view.centerX.equalToSuperview()
+        }
         
+        passwordAnimator.addAnimations {
+             self.view.layoutIfNeeded()
+    
+        }
+        
+    
+        passwordAnimator.startAnimation()
+        
+
     }
     
     internal func addSlidingAnimationToLoginButton() {
         
-        // 1. Add in animation for just the login button
-        //  Note: You must use constraints to do this animation
-        //  Reminder: You need to call something self.view in order to apply the new constraints
-        //  Reminder: There is a small delay you need to account for
+       loginButton.snp.remakeConstraints { (view) in
+        view.top.equalTo(passwordContainerView.snp.bottom).offset(32.0)
+        view.centerX.equalToSuperview()
+        }
         
+        loginAnimator.addAnimations {
+       
+            self.view.layoutIfNeeded()
+            
+        }
+        
+        loginAnimator.startAnimation()
+     
     }
     
     internal func startSlidingAnimations() {
 
-        // 1. Begin the animations
-    
     }
     
     // MARK:  Scale & Fade-In Logo
     internal func animateLogo() {
-        // 1. Ensure the scale and alpha are set properly prior to animating
+
+        self.fireDatabaseLogo.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
+       
         
-        // 2. Add the animations
+       
+        springPropertyAnimator?.addAnimations {
+            self.view.layoutIfNeeded()
+            self.fireDatabaseLogo.animationDuration = self.animationDuration
+            self.fireDatabaseLogo.alpha = 1.0
+            self.fireDatabaseLogo.transform = CGAffineTransform.identity
+        }
         
+      
+        springPropertyAnimator?.startAnimation()
     }
     
     // MARK: - Actions
@@ -221,17 +293,44 @@ class AnimationsViewController: UIViewController, CellTitled {
         let newView = UIView()
         newView.backgroundColor = UIColor(red: CGFloat(drand48()), green: CGFloat(drand48()), blue: CGFloat(drand48()), alpha: 1.0)
         newView.layer.cornerRadius = 20.0
-        bouncyViews.append(newView)
+        let newViewSize = CGSize(width: 40.0, height: 40.0)
         
         // 2. add it to the view hierarchy
+        self.view.addSubview(newView)
         
         // 3. add constraints (make it 40.0 x 40.0)
-    
-        // 4. Add the view to your behaviors
+            newView.snp.makeConstraints { (view) in
+                view.top.equalTo(loginButton.snp.bottom).offset(5)
+                view.size.equalTo(newViewSize)
+                view.centerX.equalToSuperview()
+                
+        }
+        
+        
+//        // 4. Add the view to your behaviors
+        self.view.layoutIfNeeded()
+        gravityBehavior?.addItem(newView)
+        bounceBehavior?.addItem(newView)
+        collisionBehavior?.addItem(newView)
         
         // 5. (Extra Credit) Add a random angular velocity (between 0 and 15 degrees) to the bounceBehavior
 
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     // MARK: - ⛔️EXAM ENDS HERE⛔️ -
