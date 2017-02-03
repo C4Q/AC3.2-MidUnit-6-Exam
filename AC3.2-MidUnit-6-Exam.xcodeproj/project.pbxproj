@@ -16,6 +16,9 @@
 		1E464ECC1E44507900ABE970 /* DoubleVideoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E464ECA1E44507900ABE970 /* DoubleVideoViewController.swift */; };
 		1E464ECD1E44507900ABE970 /* DoubleVideoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1E464ECB1E44507900ABE970 /* DoubleVideoViewController.xib */; };
 		CF2FCD9784CAF8234AD5C53C /* Pods_AC3_2_MidUnit_6_Exam.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1AF541D9DB83A2ED3817FE0 /* Pods_AC3_2_MidUnit_6_Exam.framework */; };
+		E3BCFB871E44E3A20091915A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3BCFB861E44E3A20091915A /* ViewController.swift */; };
+		E3BCFB8A1E44E51A0091915A /* TouchAnimatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3BCFB891E44E51A0091915A /* TouchAnimatorViewController.swift */; };
+		E3BCFB8C1E44E5290091915A /* Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3BCFB8B1E44E5290091915A /* Test.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +34,9 @@
 		1E464ECA1E44507900ABE970 /* DoubleVideoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DoubleVideoViewController.swift; sourceTree = "<group>"; };
 		1E464ECB1E44507900ABE970 /* DoubleVideoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DoubleVideoViewController.xib; sourceTree = "<group>"; };
 		70E3DD43F844B90C6BCDDA9A /* Pods-AC3.2-MidUnit-6-Exam.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AC3.2-MidUnit-6-Exam.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AC3.2-MidUnit-6-Exam/Pods-AC3.2-MidUnit-6-Exam.debug.xcconfig"; sourceTree = "<group>"; };
+		E3BCFB861E44E3A20091915A /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		E3BCFB891E44E51A0091915A /* TouchAnimatorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchAnimatorViewController.swift; sourceTree = "<group>"; };
+		E3BCFB8B1E44E5290091915A /* Test.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Test.swift; sourceTree = "<group>"; };
 		F1AF541D9DB83A2ED3817FE0 /* Pods_AC3_2_MidUnit_6_Exam.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AC3_2_MidUnit_6_Exam.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -90,6 +96,7 @@
 				1430C7481E415C1D002D904A /* IndexTableViewController.swift */,
 				1430C7491E415C1D002D904A /* Utilities.swift */,
 				1430C74F1E441042002D904A /* AnimationsViewController.swift */,
+				E3BCFB881E44E3A60091915A /* DELETE */,
 				1E464ECA1E44507900ABE970 /* DoubleVideoViewController.swift */,
 				1E464ECB1E44507900ABE970 /* DoubleVideoViewController.xib */,
 			);
@@ -111,6 +118,16 @@
 				1662D00F28272B2C9C1245FA /* Pods-AC3.2-MidUnit-6-Exam.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		E3BCFB881E44E3A60091915A /* DELETE */ = {
+			isa = PBXGroup;
+			children = (
+				E3BCFB8B1E44E5290091915A /* Test.swift */,
+				E3BCFB891E44E51A0091915A /* TouchAnimatorViewController.swift */,
+				E3BCFB861E44E3A20091915A /* ViewController.swift */,
+			);
+			name = DELETE;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -236,9 +253,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E3BCFB871E44E3A20091915A /* ViewController.swift in Sources */,
 				1E464ECC1E44507900ABE970 /* DoubleVideoViewController.swift in Sources */,
 				1430C7361E415B68002D904A /* AppDelegate.swift in Sources */,
+				E3BCFB8A1E44E51A0091915A /* TouchAnimatorViewController.swift in Sources */,
 				1430C74B1E415C1E002D904A /* Utilities.swift in Sources */,
+				E3BCFB8C1E44E5290091915A /* Test.swift in Sources */,
 				1430C74A1E415C1E002D904A /* IndexTableViewController.swift in Sources */,
 				1430C7501E441042002D904A /* AnimationsViewController.swift in Sources */,
 			);
