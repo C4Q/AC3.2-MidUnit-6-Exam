@@ -276,8 +276,17 @@ class AnimationsViewController: UIViewController, CellTitled, UICollisionBehavio
     internal func animateLogo() {
         // 1. Ensure the scale and alpha are set properly prior to animating
         
+        fireDatabaseLogo.alpha = 0.0
+        fireDatabaseLogo.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
+        
         // 2. Add the animations
         
+        springPropertyAnimator?.addAnimations {
+            self.view.layoutIfNeeded()
+            
+            self.fireDatabaseLogo.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+            self.fireDatabaseLogo.alpha = 1.0
+        }
     }
     
     // MARK: - Actions
