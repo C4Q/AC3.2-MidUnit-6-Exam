@@ -81,6 +81,8 @@ class DoubleVideoViewController: UIViewController, CellTitled, UIImagePickerCont
                 self.videoContainerBottom.layer.addSublayer(playerLayer)
                 playerLayer.frame = videoContainerBottom.bounds
                 player.play()
+            } else {
+               // do nothing
             }
             
         }
