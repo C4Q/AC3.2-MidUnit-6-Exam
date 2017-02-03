@@ -167,12 +167,17 @@ class AnimationsViewController: UIViewController, CellTitled {
         
         // 2. Instantiate/setup your behaviors
         //      a. Collision
+        collisionBehavior?.translatesReferenceBoundsIntoBoundary = true
         
         //      b. Gravity
+        gravityBehavior = UIGravityBehavior(items: bouncyViews)
+        self.dynamicAnimator?.addBehavior(gravityBehavior!)
         
         //      c. Bounce
+        //self.dynamicAnimator?.addBehavior(bounceBehavior!)
         
         // 3. Add your behaviors to the dynamic animator
+        
 
     }
     
@@ -261,10 +266,19 @@ class AnimationsViewController: UIViewController, CellTitled {
         bouncyViews.append(newView)
         
         // 2. add it to the view hierarchy
+        self.view.addSubview(newView)
         
         // 3. add constraints (make it 40.0 x 40.0)
+        newView.snp.makeConstraints({ (view) in
+            view.width.height.equalTo(40)
+            view.top.equalTo(loginButton.snp.bottom)
+            view.centerX.equalTo(self.view.snp.centerX)
+        })
     
         // 4. Add the view to your behaviors
+        collisionBehavior = UICollisionBehavior(items: [newView])
+        //dynamicAnimator?.addBehavior(collisionBehavior!)
+        
         
         // 5. (Extra Credit) Add a random angular velocity (between 0 and 15 degrees) to the bounceBehavior
 

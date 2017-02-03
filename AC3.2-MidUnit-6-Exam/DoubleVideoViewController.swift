@@ -11,6 +11,8 @@ import AVFoundation
 import AVKit
 import MobileCoreServices
 
+private var kvoContext = 0
+
 class DoubleVideoViewController: UIViewController, CellTitled, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     var titleForCell: String = "Double Video"
 
@@ -27,23 +29,19 @@ class DoubleVideoViewController: UIViewController, CellTitled, UIImagePickerCont
 
         // don't f with this line
         self.edgesForExtendedLayout = UIRectEdge(rawValue: 0)
-        
     }
 
     override func viewDidLayoutSubviews() {
         // update your layers' frames here
         guard let sublayersForTop = self.videoContainerTop.layer.sublayers else { return }
-        //guard let sublayersForBottom = self.videoContainerBottom.layer.sublayers else { return }
+        guard let sublayersForBottom = self.videoContainerBottom.layer.sublayers else { return }
         
         for layers in sublayersForTop {
             layers.frame = self.videoContainerTop.bounds
         }
-        let playerLayer = AVPlayerLayer(player: self.player)
-        self.videoContainerTop.layer.addSublayer(playerLayer)
-        
-//        for layers in sublayersForBottom {
-//            layers.frame = self.videoContainerBottom.bounds
-//        }
+        for layers in sublayersForBottom {
+            layers.frame = self.videoContainerBottom.bounds
+        }
     }
     
     @IBAction func loadVideo(_ sender: UIButton) {
@@ -55,37 +53,32 @@ class DoubleVideoViewController: UIViewController, CellTitled, UIImagePickerCont
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        //        guard let image = info[UIImagePickerControllerEditedImage] as? UIImage else { return }
-        //        dismiss(animated: true)
-        //        imageView.image = image
-        
         switch info[UIImagePickerControllerMediaType] as! String {
-        case String(kUTTypeImage): break
-            //if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
-                //self.imageView.image = image
-//                dismiss(animated: true, completion: nil)
-//            }
+        case String(kUTTypeImage):
+            break
         case String(kUTTypeMovie):
             if let url = info[UIImagePickerControllerReferenceURL] as? URL {
                 if self.firstVideoURL == nil {
                     self.firstVideoURL = url
+                    if let url = firstVideoURL {
+                        let playerItem = AVPlayerItem(url: url)
+                        self.player = AVPlayer(playerItem: playerItem)
+                        let playerLayer = AVPlayerLayer(player: self.player)
+                        playerLayer.frame = self.videoContainerTop.bounds
+                        self.videoContainerTop.layer.addSublayer(playerLayer)
+                    }
                 } else {
                     self.secondVideoURL = url
+                    if let url = secondVideoURL {
+                        let playerItem = AVPlayerItem(url: url)
+                        self.player = AVPlayer(playerItem: playerItem)
+                        let playerLayer = AVPlayerLayer(player: self.player)
+                        playerLayer.frame = self.videoContainerBottom.bounds
+                        self.videoContainerBottom.layer.addSublayer(playerLayer)
+                    }
                 }
                 dismiss(animated: true) {
-//                    let player = AVPlayer(url: url)
-                    let playerItem = AVPlayerItem(url: self.firstVideoURL!)
-                    self.player = AVPlayer(playerItem: playerItem)
-//                    let playerLayer = AVPlayerLayer(player: self.player)
-//                    self.videoContainerTop.layer.addSublayer(playerLayer)
-                    //let playerController = AVPlayerViewController()
-                    //playerController.player = player
-//                    self.present(playerController, animated: true, completion:  {
-//                        print("I present myself")
-//                    })
                     self.player.play()
-//                    self.firstVideoURL = nil
-//                    self.secondVideoURL = nil
                 }
             } else {
                 print("Error getting url from picked asset")
