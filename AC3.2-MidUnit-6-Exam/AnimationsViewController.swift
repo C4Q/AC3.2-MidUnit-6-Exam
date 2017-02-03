@@ -89,7 +89,7 @@ class AnimationsViewController: UIViewController, CellTitled {
     
     private func configureConstraints() {
         self.edgesForExtendedLayout = []
-
+        
         // logo
         fireDatabaseLogo.snp.makeConstraints { (view) in
             view.top.equalToSuperview().offset(16.0)
@@ -176,12 +176,12 @@ class AnimationsViewController: UIViewController, CellTitled {
         //      c. Bounce
         self.bounceBehavior = UIDynamicItemBehavior(items: self.bouncyViews)
         bounceBehavior?.elasticity = 0.8
-
+        
         // 3. Add your behaviors to the dynamic animator
         dynamicAnimator?.addBehavior(self.collisionBehavior!)
         dynamicAnimator?.addBehavior(self.gravityBehavior!)
         dynamicAnimator?.addBehavior(self.bounceBehavior!)
-
+        
     }
     
     // MARK: Slide Animations
@@ -211,15 +211,14 @@ class AnimationsViewController: UIViewController, CellTitled {
         
         
         
-      springPropertyAnimator?.addAnimations({
-        self.passwordContainerView.snp.remakeConstraints { (view) in
-            view.width.equalTo(self.usernameContainerView)
-            view.height.equalTo(self.usernameContainerView)
-            view.top.equalTo(self.usernameContainerView.snp.bottom).offset(16.0)
-            view.centerX.equalTo(self.usernameContainerView)
-
-        }
-
+        springPropertyAnimator?.addAnimations({
+            self.passwordContainerView.snp.remakeConstraints { (view) in
+                view.width.equalTo(self.usernameContainerView)
+                view.height.equalTo(self.usernameContainerView)
+                view.top.equalTo(self.usernameContainerView.snp.bottom).offset(16.0)
+                view.centerX.equalTo(self.usernameContainerView)
+                
+            }
             self.view.layoutIfNeeded()
         }, delayFactor: 0.1)
     }
@@ -240,7 +239,7 @@ class AnimationsViewController: UIViewController, CellTitled {
     }
     
     internal func startSlidingAnimations() {
-
+        
         // 1. Begin the animations
         springPropertyAnimator?.startAnimation()
     }
@@ -262,7 +261,7 @@ class AnimationsViewController: UIViewController, CellTitled {
         
         // 1. instantiate a new view (Provided for you!)
         let newView = UIView()
-            //UIView(frame: CGRect(x: self.loginButton.frame.midX, y: self.loginButton.frame.maxY, width: 40, height: 40))
+        //UIView(frame: CGRect(x: self.loginButton.frame.midX, y: self.loginButton.frame.maxY, width: 40, height: 40))
         newView.backgroundColor = UIColor(red: CGFloat(drand48()), green: CGFloat(drand48()), blue: CGFloat(drand48()), alpha: 1.0)
         newView.layer.cornerRadius = 20.0
         bouncyViews.append(newView)
@@ -286,7 +285,6 @@ class AnimationsViewController: UIViewController, CellTitled {
         // 5. (Extra Credit) Add a random angular velocity (between 0 and 15 degrees) to the bounceBehavior
         
         let randomAngle = (Float.pi/180) * Float(arc4random_uniform(16))
-        print(randomAngle / (Float.pi/180))
         bounceBehavior?.addAngularVelocity(CGFloat(randomAngle), for: newView)
     }
     
@@ -297,7 +295,7 @@ class AnimationsViewController: UIViewController, CellTitled {
     //                              DO NOT MODIFY THIS SECTION
     //                              But please do read the code
     //    👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇
-
+    
     // MARK: Lazy Inits
     // text fields
     internal lazy var usernameTextField: UITextField = {

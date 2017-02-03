@@ -160,7 +160,7 @@ class DoubleVideoViewController: UIViewController, CellTitled, UINavigationContr
             player.addObserver(self, forKeyPath: #keyPath(AVPlayer.rate), options: .new, context: &kvoContext)
         }
     }
-
+    
     
     func removeObservers(in player: AVPlayer) {
         if let item = player.currentItem {
