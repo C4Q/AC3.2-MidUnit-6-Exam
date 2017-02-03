@@ -161,7 +161,7 @@ class AnimationsViewController: UIViewController, CellTitled {
     // MARK: - Dynamics
     internal func setupBehaviorsAndAnimators() {
         // 1. Instantiate your dynamicAnimator
-        self.dynamicAnimator = UIDynamicAnimator(referenceView: view)
+        dynamicAnimator = UIDynamicAnimator(referenceView: view)
         
         // 2. Instantiate/setup your behaviors
         
@@ -278,9 +278,8 @@ class AnimationsViewController: UIViewController, CellTitled {
             view.top.equalTo(loginButton.snp.bottom).offset(2.0)
             view.centerX.equalTo(loginButton.snp.centerX)
         })
-        
         // 4. Add the view to your behaviors
-//        gravityBehavior.addItem(newView)
+//        gravityBehavior?.addItem(newView)
 //        collisionBehavior?.addItem(newView)
 //        bounceBehavior?.addItem(newView)
 //        collisionBehavior?.addItem(bouncyViews as! UIDynamicItem)
