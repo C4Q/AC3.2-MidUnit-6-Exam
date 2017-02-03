@@ -166,22 +166,22 @@ class AnimationsViewController: UIViewController, CellTitled {
         // 2. Instantiate/setup your behaviors
         
         //      a. Collision
-        let collisionBehavior = UICollisionBehavior(items: bouncyViews)
-        collisionBehavior.translatesReferenceBoundsIntoBoundary = true
+        collisionBehavior = UICollisionBehavior(items: [] )
+        collisionBehavior?.translatesReferenceBoundsIntoBoundary = true
         
         //      b. Gravity
-        let gravityBehavior = UIGravityBehavior(items: bouncyViews)
-        gravityBehavior.angle = CGFloat.pi / 2.0
+        gravityBehavior = UIGravityBehavior(items: [])
+        gravityBehavior?.angle = CGFloat.pi / 2.0
         
         //      c. Bounce
-        let bounceBehavior = UIDynamicItemBehavior(items: bouncyViews)
-        bounceBehavior.elasticity = 0.5
+        bounceBehavior = UIDynamicItemBehavior(items: [])
+        bounceBehavior?.elasticity = 0.5
 
 
         // 3. Add your behaviors to the dynamic animator
-        dynamicAnimator?.addBehavior(collisionBehavior)
-        dynamicAnimator?.addBehavior(gravityBehavior)
-        dynamicAnimator?.addBehavior(bounceBehavior)
+        dynamicAnimator?.addBehavior(collisionBehavior!)
+        dynamicAnimator?.addBehavior(gravityBehavior!)
+        dynamicAnimator?.addBehavior(bounceBehavior!)
     }
     
     // MARK: Slide Animations
@@ -270,22 +270,19 @@ class AnimationsViewController: UIViewController, CellTitled {
         bouncyViews.append(newView)
         
         // 2. add it to the view hierarchy
-        for ball in bouncyViews {
-            view.addSubview(ball)
-        // 3. add constraints (make it 40.0 x 40.0)
+        view.addSubview(newView)
         
-            ball.snp.makeConstraints({ (view) in
-                view.height.width.equalTo(40.0)
-                view.top.equalTo(loginButton.snp.bottom).offset(2.0)
-                view.centerX.equalTo(loginButton.snp.centerX)
-            })
+        // 3. add constraints (make it 40.0 x 40.0)
+        newView.snp.makeConstraints({ (view) in
+            view.height.width.equalTo(40.0)
+            view.top.equalTo(loginButton.snp.bottom).offset(2.0)
+            view.centerX.equalTo(loginButton.snp.centerX)
+        })
         
         // 4. Add the view to your behaviors
-        
-            gravityBehavior?.addItem(ball)
-            collisionBehavior?.addItem(ball)
-            bounceBehavior?.addItem(ball)
-        }
+//        gravityBehavior.addItem(newView)
+//        collisionBehavior?.addItem(newView)
+//        bounceBehavior?.addItem(newView)
 //        collisionBehavior?.addItem(bouncyViews as! UIDynamicItem)
 //        bounceBehavior?.addItem(bouncyViews as! UIDynamicItem)
         // 5. (Extra Credit) Add a random angular velocity (between 0 and 15 degrees) to the bounceBehavior
