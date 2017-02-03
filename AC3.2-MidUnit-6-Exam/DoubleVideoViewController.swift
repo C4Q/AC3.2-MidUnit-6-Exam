@@ -66,7 +66,12 @@ class DoubleVideoViewController: UIViewController, CellTitled, UIImagePickerCont
             let player = AVPlayer(playerItem: playerItem)
             let playerLayer = AVPlayerLayer(player: player)
             
+            // looking at http://stackoverflow.com/questions/29000251/swift-resize-an-avplayerlayer-to-match-the-bounds-of-its-parent-container
+            
             self.videoContainerTop.layer.addSublayer(playerLayer)
+            playerLayer.frame = videoContainerTop.bounds
+            
+            player.play()
             
 //            if let topIsFilled = self.videoContainerTop.layer.sublayers {
 //                self.videoContainerBottom.layer.addSublayer(playerLayer)
@@ -81,9 +86,9 @@ class DoubleVideoViewController: UIViewController, CellTitled, UIImagePickerCont
                 let player = AVPlayer(url: url)
                 let playerController = AVPlayerViewController()
                 playerController.player = player
-                self.present(playerController, animated: true, completion: {
-                    self.movieURL = nil
-                })
+                //self.present(playerController, animated: true, completion: {
+                //    self.movieURL = nil
+                //})
             }
         }
     }
