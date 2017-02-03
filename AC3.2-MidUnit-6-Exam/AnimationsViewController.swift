@@ -255,7 +255,7 @@ class AnimationsViewController: UIViewController, CellTitled {
     }
     
     func rando() -> Int {
-        return Int(arc4random_uniform(2))
+        return Int(arc4random_uniform(3))
     }
     
     // MARK: - Actions
@@ -269,8 +269,10 @@ class AnimationsViewController: UIViewController, CellTitled {
         if rando() == 0 {
             newView.image = UIImage(named: "sabro1")
         }
-        else {
+        else if rando() == 1 {
             newView.image = UIImage(named: "louis")
+        } else {
+            newView.image = UIImage(named: "evan3")
         }
         //        newView.tintColor = UIColor(red: CGFloat(drand48()), green: CGFloat(drand48()), blue: CGFloat(drand48()), alpha: 1.0)
         bouncyViews.append(newView)
