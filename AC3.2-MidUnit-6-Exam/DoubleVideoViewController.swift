@@ -22,7 +22,7 @@ class DoubleVideoViewController: UIViewController, UIImagePickerControllerDelega
     var playerLayerBottom: AVPlayerLayer!
     var playerBottomPlaying = false
     
-    var videoURLs = [URL]()
+    var videoURL: URL?
     
     @IBOutlet weak var videoContainerTop: UIView!
     @IBOutlet weak var videoContainerBottom: UIView!
@@ -56,21 +56,23 @@ class DoubleVideoViewController: UIViewController, UIImagePickerControllerDelega
         case String(kUTTypeMovie):
             if let url = info[UIImagePickerControllerMediaURL] as? URL {
                 if playerTopPlaying == false || playerBottomPlaying == false  {
-//                if videoURLs.count < 2 {
-                self.videoURLs.append(url)
+                    self.videoURL = url
                 }
                 else {
                     noMoreSpots()
+                    break
                 }
             }
         default:
             noMoreSpots()
+            break
         }
         
         // MARK: Picker Dismissal
         picker.dismiss(animated: true) {
             if self.playerTopPlaying == false {
-                let playerItem = AVPlayerItem(url: self.videoURLs.popLast()!)
+                let playerItem = AVPlayerItem(url: self.videoURL!)
+                self.videoURL = nil
                 
                 self.playerTop = AVPlayer(playerItem: playerItem)
                 self.playerLayerTop = AVPlayerLayer(player: self.playerTop)
@@ -79,15 +81,16 @@ class DoubleVideoViewController: UIViewController, UIImagePickerControllerDelega
                 self.playerLayerTop.frame = self.videoContainerTop.bounds
                 self.playerTop.play()
                 self.playerTopPlaying = true
-//                DispatchQueue.main.async {
-//                    if self.playerTop.rate == 0.0 {
-//                        self.playerTopPlaying = false
-//                    }
-//                }
+                DispatchQueue.main.async {
+                    if self.playerTop.rate == 0.0 {
+                        self.playerTopPlaying = false
+                    }
+                }
             }
                 
-            else {
-                let playerItem = AVPlayerItem(url: self.videoURLs.popLast()!)
+            else if self.playerBottomPlaying == false {
+                let playerItem = AVPlayerItem(url: self.videoURL!)
+                self.videoURL = nil
                 
                 self.playerBottom = AVPlayer(playerItem: playerItem)
                 self.playerLayerBottom = AVPlayerLayer(player: self.playerBottom)
@@ -102,9 +105,9 @@ class DoubleVideoViewController: UIViewController, UIImagePickerControllerDelega
                     }
                 }
             }
-//            else {
-//                self.noMoreSpots()
-//            }
+            else {
+                self.noMoreSpots()
+            }
         }
     }
     
