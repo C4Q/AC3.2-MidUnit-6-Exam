@@ -27,13 +27,13 @@ class DoubleVideoViewController: UIViewController, CellTitled, UIImagePickerCont
 
     override func viewDidLayoutSubviews() {
         // update your layers' frames here
-        guard let sublayers = self.videoContainerBottom.layer.sublayers
+        guard let sublayers = self.videoContainerTop.layer.sublayers
             else {
                 return
         }
         
         for layer in sublayers {
-            layer.frame = self.videoContainerBottom.bounds
+            layer.frame = self.videoContainerTop.bounds
         }
     }
     
@@ -59,9 +59,9 @@ class DoubleVideoViewController: UIViewController, CellTitled, UIImagePickerCont
                 let playerLayer = AVPlayerLayer(player: self.player)
         
             
-                self.videoContainerBottom.layer.addSublayer(playerLayer)
+                self.videoContainerTop.layer.addSublayer(playerLayer)
                 
-                playerLayer.frame = self.videoContainerBottom.bounds
+                playerLayer.frame = self.videoContainerTop.bounds
                 self.player?.playImmediately(atRate: 1.0)
                 
             }
