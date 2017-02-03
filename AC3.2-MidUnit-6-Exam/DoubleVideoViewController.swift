@@ -29,7 +29,7 @@ class DoubleVideoViewController: UIViewController, CellTitled, UIImagePickerCont
         // update your layers' frames here
         
         /* 
-         Thi stiff is partially from https://github.com/martyav/AC3.2-AVPlayerKVO/blob/master/AVPlayerKVO/ViewController.swift but altered to fit the part
+         Thi stuff is partially from https://github.com/martyav/AC3.2-AVPlayerKVO/blob/master/AVPlayerKVO/ViewController.swift but altered to fit the part
          */
         
         guard let topSubLayer = self.videoContainerTop.layer.sublayers,
@@ -45,6 +45,8 @@ class DoubleVideoViewController: UIViewController, CellTitled, UIImagePickerCont
         for layer in bottomSubLayer {
             layer.frame = self.videoContainerBottom.bounds
         }
+        
+        view.layoutIfNeeded()
     }
     
     @IBAction func loadVideo(_ sender: UIButton) {
@@ -53,6 +55,7 @@ class DoubleVideoViewController: UIViewController, CellTitled, UIImagePickerCont
         // recall that, by default, this array only contains static pix...
         imagePickerController.mediaTypes = [String(kUTTypeMovie)]
         imagePickerController.delegate = self
+        imagePickerController.present(imagePickerController, animated: true, completion: nil)
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
@@ -63,9 +66,9 @@ class DoubleVideoViewController: UIViewController, CellTitled, UIImagePickerCont
             let player = AVPlayer(playerItem: playerItem)
             let playerLayer = AVPlayerLayer(player: player)
             
-            if self.videoContainerTop == nil {
+            if (self.videoContainerTop.layer.sublayers?.count)! < 1 {
                 self.videoContainerTop.layer.addSublayer(playerLayer)
-            } else if self.videoContainerBottom == nil {
+            } else if (self.videoContainerTop.layer.sublayers?.count)! > 1 {
                 self.videoContainerBottom.layer.addSublayer(playerLayer)
             }
         }
