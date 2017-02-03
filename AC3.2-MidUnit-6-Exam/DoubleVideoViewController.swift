@@ -23,18 +23,23 @@ class DoubleVideoViewController: UIViewController, CellTitled, UIImagePickerCont
     var topPlayer: AVPlayer?
     var bottomPlayer: AVPlayer?
     
+    var players: [AVPlayer?]!
+    var containers: [UIView]!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // don't f with this line
         self.edgesForExtendedLayout = UIRectEdge(rawValue: 0)
+        
+        self.players = [topPlayer, bottomPlayer]
+        self.containers = [videoContainerTop, videoContainerBottom]
     }
 
     override func viewDidLayoutSubviews() {
-        
         // update your layers' frames here
+        // why?
     }
-    
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         
@@ -50,28 +55,24 @@ class DoubleVideoViewController: UIViewController, CellTitled, UIImagePickerCont
             let player = AVPlayer(playerItem: playerItem)
             let playerLayer = AVPlayerLayer(player: player)
             
-            if self.topPlayer == nil || self.topPlayer?.rate == 0.0 {
-                videoContainerTop.layer.sublayers = nil
-                self.topPlayer = player
-                playerLayer.frame = self.videoContainerTop.bounds
-                videoContainerTop.layer.addSublayer(playerLayer)
-                self.topPlayer?.play()
+            for i in 0..<self.players.count where (players[i] == nil || players[i]?.rate == 0.0) {
+                containers[i].layer.sublayers = nil
+                players[i] = player
+                playerLayer.frame = containers[i].bounds
+                containers[i].layer.addSublayer(playerLayer)
+                players[i]?.play()
+                self.videoURL = nil
+                return
             }
-            else if self.bottomPlayer == nil || self.bottomPlayer?.rate == 0.0 {
-                videoContainerBottom.layer.sublayers = nil
-                self.bottomPlayer = player
-                playerLayer.frame = self.videoContainerBottom.bounds
-                videoContainerBottom.layer.addSublayer(playerLayer)
-                self.bottomPlayer?.play()                
-            }
-            else {
-                let alert = UIAlertController(title: "No Free Video Slots Availible", message: "Please wait until one of the videos on screen has finished before selecting another.", preferredStyle: .alert)
-                let okayAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-                alert.addAction(okayAction)
-                present(alert, animated: true, completion: nil)
-            }
-            self.videoURL = nil
+            showAlert()
         }
+    }
+    
+    func showAlert() {
+        let alert = UIAlertController(title: "No Free Video Slots Availible", message: "Please wait until one of the videos on screen has finished before selecting another.", preferredStyle: .alert)
+        let okayAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+        alert.addAction(okayAction)
+        present(alert, animated: true, completion: nil)
     }
     
     @IBAction func loadVideo(_ sender: UIButton) {
@@ -81,5 +82,4 @@ class DoubleVideoViewController: UIViewController, CellTitled, UIImagePickerCont
         imagePickerController.mediaTypes = [String(kUTTypeMovie), String(kUTTypeImage)]
         self.present(imagePickerController, animated: true, completion: nil)
     }
-    
 }
