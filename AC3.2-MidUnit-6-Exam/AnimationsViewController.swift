@@ -167,7 +167,7 @@ class AnimationsViewController: UIViewController, CellTitled {
         self.collisionBehavior = UICollisionBehavior()
         self.collisionBehavior?.translatesReferenceBoundsIntoBoundary = true
         //      b. Gravity
-        self.gravityBehavior = UIGravityBehavior(items: bouncyViews)
+        self.gravityBehavior = UIGravityBehavior()
         self.gravityBehavior?.magnitude = 0.5
         //      c. Bounce
         self.bounceBehavior = UIDynamicItemBehavior()
@@ -272,22 +272,22 @@ class AnimationsViewController: UIViewController, CellTitled {
         // 2. add it to the view hierarchy
         view.addSubview(newView)
         // 3. add constraints (make it 40.0 x 40.0)
-        newView.snp.makeConstraints { (make) in
+        newView.snp.remakeConstraints { (make) in
             make.size.equalTo(CGSize(width: 40.0, height: 40.0))
-            make.centerY.equalTo(loginButton.snp.bottom)
+            make.top.equalTo(loginButton.snp.bottom)
             make.centerX.equalTo(loginButton)
         }
         self.view.layoutIfNeeded()
         // 4. Add the view to your behaviors
-        self.gravityBehavior?.addItem(newView)
         self.collisionBehavior?.addItem(newView)
+        self.gravityBehavior?.addItem(newView)
         self.bounceBehavior?.addItem(newView)
         
         
         // 5. (Extra Credit) Add a random angular velocity (between 0 and 15 degrees) to the bounceBehavior
         let random = randomArc()
         let elasticBehavior = UIDynamicItemBehavior(items: [newView])
-        elasticBehavior.addAngularVelocity(random * (CGFloat.pi / 180.0), for: newView)
+        elasticBehavior.addAngularVelocity(random * CGFloat.pi / 180.0, for: newView)
         dynamicAnimator?.addBehavior(elasticBehavior)
     }
     

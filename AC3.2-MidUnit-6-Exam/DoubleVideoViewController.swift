@@ -103,6 +103,8 @@ class DoubleVideoViewController: UIViewController, CellTitled, UIImagePickerCont
     
     func bothPlayersPlaying() {
         let alertThis = UIAlertController(title: "IRASHAII", message: "Turn off all devices as videos are in progress. Recording is prohibited", preferredStyle: .alert)
+        let gomen = UIAlertAction(title: "Suimimasen", style: .default, handler: nil)
+        alertThis.addAction(gomen)
         self.present(alertThis, animated: true, completion: nil)
     }
 }
