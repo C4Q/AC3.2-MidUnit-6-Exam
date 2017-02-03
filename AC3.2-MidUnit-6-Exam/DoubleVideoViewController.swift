@@ -66,11 +66,13 @@ class DoubleVideoViewController: UIViewController, CellTitled, UIImagePickerCont
             let player = AVPlayer(playerItem: playerItem)
             let playerLayer = AVPlayerLayer(player: player)
             
-            if (self.videoContainerTop.layer.sublayers?.count)! < 1 {
-                self.videoContainerTop.layer.addSublayer(playerLayer)
-            } else if (self.videoContainerTop.layer.sublayers?.count)! > 1 {
-                self.videoContainerBottom.layer.addSublayer(playerLayer)
-            }
+            self.videoContainerTop.layer.addSublayer(playerLayer)
+            
+//            if let topIsFilled = self.videoContainerTop.layer.sublayers {
+//                self.videoContainerBottom.layer.addSublayer(playerLayer)
+//            } else {
+//                self.videoContainerTop.layer.addSublayer(playerLayer)
+//            }
         }
         
         // dismissing imagePickerController
