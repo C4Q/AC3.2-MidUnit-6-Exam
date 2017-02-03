@@ -240,7 +240,7 @@ class AnimationsViewController: UIViewController, CellTitled {
     // MARK: - Dynamics
     internal func setupBehaviorsAndAnimators() {
         // 1. Instantiate your dynamicAnimator
-//        self.dynamicAnimator = UIDynamicAnimator()
+        self.dynamicAnimator = UIDynamicAnimator()
         self.dynamicAnimator = UIDynamicAnimator(referenceView: view)
         // 2. Instantiate/setup your behaviors
         //      a. Collision
@@ -249,22 +249,21 @@ class AnimationsViewController: UIViewController, CellTitled {
         //      b. Gravity
         gravityBehavior = UIGravityBehavior()
         gravityBehavior?.magnitude = 9.0
+
         
         //      c. Bounce
         bounceBehavior = UIDynamicItemBehavior()
         bounceBehavior?.elasticity = 0.5
         
+        
         // 3. Add your behaviors to the dynamic animator
-//        gravityBehavior = UIGravityBehavior(items: bouncyViews)
-//        collisionBehavior = UICollisionBehavior(items: bouncyViews)
-//        bounceBehavior = UIDynamicItemBehavior(items: bouncyViews)
-//        guard let collision = collisionBehavior,
-//            let gravity = gravityBehavior,
-//            let bounce = bounceBehavior else { return }
-//        self.dynamicAnimator?.removeAllBehaviors()
-//        self.dynamicAnimator?.addBehavior(collision)
-//        self.dynamicAnimator?.addBehavior(gravity)
-//        self.dynamicAnimator?.addBehavior(bounce)
+           guard let collision = collisionBehavior,
+        let gravity = gravityBehavior,
+        let bounce = bounceBehavior else { return }
+        self.dynamicAnimator?.addBehavior(collision)
+        self.dynamicAnimator?.addBehavior(gravity)
+        self.dynamicAnimator?.addBehavior(bounce)
+
     }
     
     // MARK: - Actions
@@ -283,25 +282,17 @@ class AnimationsViewController: UIViewController, CellTitled {
         // 3. add constraints (make it 40.0 x 40.0)
         newView.snp.makeConstraints { (balls) in
             balls.size.equalTo(CGSize(width: 40, height: 40))
-            balls.centerX.equalTo(loginButton.snp.centerX)
+            balls.centerX.equalToSuperview()
             balls.bottom.equalTo(loginButton.snp.bottom)
         }
         
+        self.view.layoutIfNeeded()
         // 4. Add the view to your behaviors
-        guard let collision = collisionBehavior,
-            let gravity = gravityBehavior,
-            let bounce = bounceBehavior else { return }
-        self.dynamicAnimator?.removeAllBehaviors()
-        self.dynamicAnimator?.addBehavior(collision)
-        self.dynamicAnimator?.addBehavior(gravity)
-        self.dynamicAnimator?.addBehavior(bounce)
+        gravityBehavior?.addItem(newView)
         
-        collisionBehavior?.translatesReferenceBoundsIntoBoundary = true
-        gravityBehavior = UIGravityBehavior(items: bouncyViews)
-        collisionBehavior = UICollisionBehavior(items: bouncyViews)
-        bounceBehavior = UIDynamicItemBehavior(items: bouncyViews)
-
-
+        collisionBehavior?.addItem(newView)
+        
+        bounceBehavior?.addItem(newView)
 
         
         // 5. (Extra Credit) Add a random angular velocity (between 0 and 15 degrees) to the bounceBehavior
