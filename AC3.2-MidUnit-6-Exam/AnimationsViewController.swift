@@ -316,7 +316,18 @@ class AnimationsViewController: UIViewController, CellTitled, UICollisionBehavio
     
         // 4. Add the view to your behaviors
         
+        setupBehaviorsAndAnimators()
+        
         // 5. (Extra Credit) Add a random angular velocity (between 0 and 15 degrees) to the bounceBehavior
+        
+        var randomPush = CGFloat(arc4random_uniform(75))
+        let upOrDown = CGFloat(arc4random_uniform(2))
+        
+        if upOrDown == 1 {
+            randomPush *= -1
+        }
+        
+        newView.transform = CGAffineTransform(translationX: 0, y: randomPush * upOrDown)
         
         let randomAngle = CGFloat(arc4random_uniform(15))
         let spin = UIDynamicItemBehavior(items: bouncyViews)
