@@ -16,6 +16,7 @@
 		1E464ECC1E44507900ABE970 /* DoubleVideoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E464ECA1E44507900ABE970 /* DoubleVideoViewController.swift */; };
 		1E464ECD1E44507900ABE970 /* DoubleVideoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1E464ECB1E44507900ABE970 /* DoubleVideoViewController.xib */; };
 		CF2FCD9784CAF8234AD5C53C /* Pods_AC3_2_MidUnit_6_Exam.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1AF541D9DB83A2ED3817FE0 /* Pods_AC3_2_MidUnit_6_Exam.framework */; };
+		D38499011E45059A002C9081 /* pocky.MOV in Resources */ = {isa = PBXBuildFile; fileRef = D38499001E45059A002C9081 /* pocky.MOV */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +32,7 @@
 		1E464ECA1E44507900ABE970 /* DoubleVideoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DoubleVideoViewController.swift; sourceTree = "<group>"; };
 		1E464ECB1E44507900ABE970 /* DoubleVideoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DoubleVideoViewController.xib; sourceTree = "<group>"; };
 		70E3DD43F844B90C6BCDDA9A /* Pods-AC3.2-MidUnit-6-Exam.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AC3.2-MidUnit-6-Exam.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AC3.2-MidUnit-6-Exam/Pods-AC3.2-MidUnit-6-Exam.debug.xcconfig"; sourceTree = "<group>"; };
+		D38499001E45059A002C9081 /* pocky.MOV */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = pocky.MOV; sourceTree = "<group>"; };
 		F1AF541D9DB83A2ED3817FE0 /* Pods_AC3_2_MidUnit_6_Exam.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AC3_2_MidUnit_6_Exam.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -78,6 +80,7 @@
 			children = (
 				1430C7351E415B68002D904A /* AppDelegate.swift */,
 				1430C73C1E415B68002D904A /* Assets.xcassets */,
+				D38499001E45059A002C9081 /* pocky.MOV */,
 				1430C73E1E415B68002D904A /* LaunchScreen.storyboard */,
 				1430C7411E415B68002D904A /* Info.plist */,
 			);
@@ -178,6 +181,7 @@
 				1430C7401E415B68002D904A /* LaunchScreen.storyboard in Resources */,
 				1E464ECD1E44507900ABE970 /* DoubleVideoViewController.xib in Resources */,
 				1430C73D1E415B68002D904A /* Assets.xcassets in Resources */,
+				D38499011E45059A002C9081 /* pocky.MOV in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

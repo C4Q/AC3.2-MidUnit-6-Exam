@@ -160,10 +160,6 @@ class AnimationsViewController: UIViewController, CellTitled, UICollisionBehavio
     
     // MARK: - Dynamics
     
-    private func trackCollissions(_ behavior: UICollisionBehavior, beganContactFor item: UIDynamicItem, withBoundaryIdentifier identifier: NSCopying?, at p: CGPoint) {
-        print("Contact - \(identifier)")
-    }
-    
     internal func setupBehaviorsAndAnimators() {
         // 1. Instantiate your dynamicAnimator
         
@@ -306,7 +302,7 @@ class AnimationsViewController: UIViewController, CellTitled, UICollisionBehavio
         
         newView.snp.makeConstraints { (view) in
             view.centerX.equalTo(loginButton.snp.centerX)
-            view.centerY.equalTo(loginButton.snp.centerY).offset(drand48())
+            view.centerY.equalTo(loginButton.snp.centerY)
             view.height.equalTo(40.0)
             view.width.equalTo(40.0)
         }
