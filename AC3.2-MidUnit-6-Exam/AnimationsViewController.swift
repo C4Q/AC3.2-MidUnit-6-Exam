@@ -170,11 +170,11 @@ class AnimationsViewController: UIViewController, CellTitled {
         
         //      b. Gravity
         gravityBehavior = UIGravityBehavior(items: bouncyViews)
-        gravityBehavior?.magnitude = 2.0
+        gravityBehavior?.magnitude = 1.0
         
         //      c. Bounce
         bounceBehavior = UIDynamicItemBehavior(items: bouncyViews)
-        bounceBehavior?.elasticity = 0.5
+        bounceBehavior?.elasticity = 1.0
         
         // 3. Add your behaviors to the dynamic animator
         self.dynamicAnimator?.addBehavior(collisionBehavior!)
