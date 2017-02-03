@@ -69,11 +69,6 @@ class DoubleVideoViewController: UIViewController, CellTitled, UIImagePickerCont
             
             // looking at http://stackoverflow.com/questions/29000251/swift-resize-an-avplayerlayer-to-match-the-bounds-of-its-parent-container
             
-            //            self.videoContainerTop.layer.addSublayer(playerLayer)
-            //            playerLayer.frame = videoContainerTop.bounds
-            //
-            //            player.play()
-            
             movies.append(playerLayer)
             
             if self.videoContainerTop.layer.sublayers == nil && self.videoContainerBottom.layer.sublayers == nil {
@@ -87,6 +82,7 @@ class DoubleVideoViewController: UIViewController, CellTitled, UIImagePickerCont
             } else {
                 let top = movies[0]
                 let bottom = movies[1]
+                
                 if top.player?.rate != 0 && bottom.player?.rate == 0 {
                     bottom.removeFromSuperlayer()
                     movies[1] = playerLayer
@@ -100,16 +96,7 @@ class DoubleVideoViewController: UIViewController, CellTitled, UIImagePickerCont
                     playerLayer.frame = videoContainerTop.bounds
                     player.play()
                 } else {
-                
-                //                note: i know we can use the player's rate to check if something is playing, but how do we keep track of which player is playing in which container view?
-                
-                //                pseudo code nonsense -- if the player in the top is playing and the player in the bottom is not playing, do this {
-                //
-                //                } else if the player in the top is not playing, and the bottom player is playing, do that {
-                //
-                //                } else {
-                
-                dismiss(animated: true) {
+                    dismiss(animated: true) {
                     if let url = self.movieURL {
                         let player = AVPlayer(url: url)
                         let playerController = AVPlayerViewController()
@@ -119,7 +106,7 @@ class DoubleVideoViewController: UIViewController, CellTitled, UIImagePickerCont
                 
                 // taken from my emojiCard project: https://github.com/martyav/EmojiDeck/blob/master/EmojiDeck/EmojiCardViewController.swift
                 
-                let alertController = UIAlertController(title: "Hey there, pal!", message: "You can't watch a video right now. Wait until one ends first!", preferredStyle: UIAlertControllerStyle.alert)
+                let alertController = UIAlertController(title: "You can't watch a video right now.", message: "Wait until one ends first!", preferredStyle: UIAlertControllerStyle.alert)
                 let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default) { (result : UIAlertAction) -> Void in
                     print("OK")
                 }
@@ -130,11 +117,7 @@ class DoubleVideoViewController: UIViewController, CellTitled, UIImagePickerCont
                 return
             }
         }
-            
-            if player.rate == 0 {
-                playerLayer.removeFromSuperlayer()
-            }
-        }
+    }
         
         // dismissing imagePickerController
         dismiss(animated: true) {
@@ -142,48 +125,8 @@ class DoubleVideoViewController: UIViewController, CellTitled, UIImagePickerCont
                 let player = AVPlayer(url: url)
                 let playerController = AVPlayerViewController()
                 playerController.player = player
-                //self.present(playerController, animated: true, completion: {
-                //    self.movieURL = nil
-                //})
             }
         }
     }
     
-    /* From my copy of yesterday's coding practice...
-     @IBAction func pickImage(_ sender: UIButton) {
-     let imagePickerController = UIImagePickerController()
-     imagePickerController.sourceType = .photoLibrary
-     imagePickerController.mediaTypes = [String(kUTTypeMovie), String(kUTTypeImage)]
-     imagePickerController.delegate = self
-     self.present(imagePickerController, animated: true, completion: nil)
-     }
-     
-     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-     switch info[UIImagePickerControllerMediaType] as! String {
-     case String(kUTTypeImage):
-     if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
-     self.imageView.image = image
-     }
-     case String(kUTTypeMovie):
-     if let url = info[UIImagePickerControllerReferenceURL] as? URL {
-     self.movieURL = url
-     }
-     default:
-     print("bad media")
-     }
-     
-     // dismissing imagePickerController
-     dismiss(animated: true) {
-     if let url = self.movieURL {
-     let player = AVPlayer(url: url)
-     let playerController = AVPlayerViewController()
-     playerController.player = player
-     self.present(playerController, animated: true, completion: {
-     self.movieURL = nil
-     })
-     }
-     }
-     }
-     
-     */
 }
