@@ -65,8 +65,6 @@ class AnimationsViewController: UIViewController, CellTitled {
         self.removeBehaviors()
         self.removeConstraints()
         
-        //So the app doesn't crash when you re-enter this viewcontroller.
-        bouncyViews.removeAll()
     }
     
     // MARK: - Setup
@@ -166,13 +164,13 @@ class AnimationsViewController: UIViewController, CellTitled {
         self.dynamicAnimator = UIDynamicAnimator(referenceView: view)
         // 2. Instantiate/setup your behaviors
         //      a. Collision
-        self.collisionBehavior = UICollisionBehavior(items: self.bouncyViews)
+        self.collisionBehavior = UICollisionBehavior()
         self.collisionBehavior?.translatesReferenceBoundsIntoBoundary = true
         //      b. Gravity
-        self.gravityBehavior = UIGravityBehavior(items: self.bouncyViews)
+        self.gravityBehavior = UIGravityBehavior()
         self.gravityBehavior?.magnitude = 0.2
         //      c. Bounce
-        self.bounceBehavior = UIDynamicItemBehavior(items: self.bouncyViews)
+        self.bounceBehavior = UIDynamicItemBehavior()
         bounceBehavior?.elasticity = 0.5
         // 3. Add your behaviors to the dynamic animator
         self.dynamicAnimator?.addBehavior(collisionBehavior!)
