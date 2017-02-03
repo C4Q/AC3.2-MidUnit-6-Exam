@@ -172,14 +172,14 @@ class AnimationsViewController: UIViewController, CellTitled, UICollisionBehavio
         // 2. Instantiate/setup your behaviors
         //      a. Collision
         
-        collisionBehavior = UICollisionBehavior(items: self.bouncyViews)
+        collisionBehavior = UICollisionBehavior(items: bouncyViews)
         collisionBehavior?.collisionDelegate = self
         
         collisionBehavior?.addBoundary(withIdentifier: "bottom" as NSCopying, from: CGPoint(x: view.frame.minX, y: view.frame.maxY), to: CGPoint(x: view.frame.maxX, y: view.frame.maxY))
         
         //      b. Gravity
         
-        gravityBehavior = UIGravityBehavior(items: self.bouncyViews)
+        gravityBehavior = UIGravityBehavior(items: bouncyViews)
         gravityBehavior?.gravityDirection = CGVector(dx: 0, dy: 1.5)
         
         //      c. Bounce
@@ -189,6 +189,7 @@ class AnimationsViewController: UIViewController, CellTitled, UICollisionBehavio
         bounceBehavior?.elasticity = 0.9
         
         // 3. Add your behaviors to the dynamic animator
+        
         if let colliding = collisionBehavior,
             let falling = gravityBehavior,
             let bouncing = bounceBehavior {
@@ -203,33 +204,72 @@ class AnimationsViewController: UIViewController, CellTitled, UICollisionBehavio
     internal func addSlidingAnimationToUsername() {
         
         // 1. Add in animation for just the usernameContainerView here (the textField is a subview, so it will animate with it)
+        
+        springPropertyAnimator?.addAnimations {
+            self.view.layoutIfNeeded()
+        }
+        
         //  Note: You must use constraints to do this animation
         //  Reminder: You need to call something self.view in order to apply the new constraints
         
+        self.usernameContainerView.snp.remakeConstraints { (view) in
+            view.centerX.equalToSuperview()
+            view.top.equalTo(fireDatabaseLogo.snp.bottom).offset(24.0)
+            view.width.equalToSuperview().multipliedBy(0.8)
+            view.height.equalTo(44.0)
+        }
     }
     
     internal func addSlidingAnimationToPassword() {
         
         // 1. Add in animation for just the passwordContainerView here (the textField is a subview, so it will animate with it)
+        
+        springPropertyAnimator?.addAnimations ({
+            self.view.layoutIfNeeded()
+        }, delayFactor: 0.15)
+        
         //  Note: You must use constraints to do this animation
         //  Reminder: You need to call something self.view in order to apply the new constraints
-        //  Reminder: There is a small delay you need to account for
         
+        self.passwordContainerView.snp.remakeConstraints { (view) in
+             view.centerX.equalTo(usernameContainerView)
+            view.top.equalTo(usernameContainerView.snp.bottom).offset(16)
+            view.width.equalToSuperview().multipliedBy(0.8)
+            view.height.equalTo(44.0)
+        }
+        
+        //  Reminder: There is a small delay you need to account for
     }
     
     internal func addSlidingAnimationToLoginButton() {
         
         // 1. Add in animation for just the login button
+        
+        springPropertyAnimator?.addAnimations ({
+            self.view.layoutIfNeeded()
+        }, delayFactor: 0.30)
+
         //  Note: You must use constraints to do this animation
         //  Reminder: You need to call something self.view in order to apply the new constraints
-        //  Reminder: There is a small delay you need to account for
         
+        self.loginButton.snp.remakeConstraints { (view) in
+            view.centerX.equalTo(passwordContainerView)
+            view.top.equalTo(passwordContainerView.snp.bottom).offset(32.0)
+            view.height.equalTo(44.0)
+            
+        }
+        
+        //  Reminder: There is a small delay you need to account for
     }
     
     internal func startSlidingAnimations() {
 
         // 1. Begin the animations
-    
+        addSlidingAnimationToUsername()
+        addSlidingAnimationToPassword()
+        addSlidingAnimationToLoginButton()
+
+        springPropertyAnimator?.startAnimation()
     }
     
     // MARK:  Scale & Fade-In Logo
