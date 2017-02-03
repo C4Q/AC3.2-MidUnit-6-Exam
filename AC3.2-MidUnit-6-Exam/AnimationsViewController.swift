@@ -165,15 +165,15 @@ class AnimationsViewController: UIViewController, CellTitled {
         
         // 2. Instantiate/setup your behaviors
         //      a. Collision
-        collisionBehavior = UICollisionBehavior(items: bouncyViews)
+        collisionBehavior = UICollisionBehavior()
         collisionBehavior?.translatesReferenceBoundsIntoBoundary = true
         
         //      b. Gravity
-        gravityBehavior = UIGravityBehavior(items: bouncyViews)
+        gravityBehavior = UIGravityBehavior()
         gravityBehavior?.magnitude = 1.0
         
         //      c. Bounce
-        bounceBehavior = UIDynamicItemBehavior(items: bouncyViews)
+        bounceBehavior = UIDynamicItemBehavior()
         bounceBehavior?.elasticity = 1.0
         
         // 3. Add your behaviors to the dynamic animator
@@ -188,6 +188,7 @@ class AnimationsViewController: UIViewController, CellTitled {
         // 1. Add in animation for just the usernameContainerView here (the textField is a subview, so it will animate with it)
         //  Note: You must use constraints to do this animation
         //  Reminder: You need to call something self.view in order to apply the new constraints
+       
         springPropertyAnimator?.addAnimations({
             self.usernameContainerView.snp.remakeConstraints { (view) in
                 view.width.equalToSuperview().multipliedBy(0.8)
