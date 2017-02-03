@@ -161,15 +161,24 @@ class AnimationsViewController: UIViewController, CellTitled {
     // MARK: - Dynamics
     internal func setupBehaviorsAndAnimators() {
         // 1. Instantiate your dynamicAnimator
+        self.dynamicAnimator = UIDynamicAnimator(referenceView: self.view)
+        
+        
         
         // 2. Instantiate/setup your behaviors
         //      a. Collision
+        collisionBehavior?.translatesReferenceBoundsIntoBoundary = true
+        //self.dynamicAnimator?.addBehavior(collisionBehavior!)
         
         //      b. Gravity
+        gravityBehavior = UIGravityBehavior(items: bouncyViews)
         
         //      c. Bounce
         
         // 3. Add your behaviors to the dynamic animator
+//        self.dynamicAnimator?.addBehavior(collisionBehavior!)
+//        self.dynamicAnimator?.addBehavior(gravityBehavior!)
+//        self.dynamicAnimator?.addBehavior(bounceBehavior!)
 
     }
     
@@ -179,6 +188,17 @@ class AnimationsViewController: UIViewController, CellTitled {
         // 1. Add in animation for just the usernameContainerView here (the textField is a subview, so it will animate with it)
         //  Note: You must use constraints to do this animation
         //  Reminder: You need to call something self.view in order to apply the new constraints
+        let usernameContainerAnimation = UIViewPropertyAnimator(duration: 0.5, curve: .linear, animations: nil)
+        usernameContainerAnimation.addAnimations {
+            self.usernameContainerView.snp.remakeConstraints({ (view) in
+                view.top.equalTo(self.fireDatabaseLogo.snp.bottom).offset(24.0)
+                view.centerX.equalTo(self.view.snp.centerX)
+                view.width.equalToSuperview().multipliedBy(0.8)
+                view.height.equalTo(44.0)
+            })
+            self.view.layoutIfNeeded()
+        }
+        usernameContainerAnimation.startAnimation()
         
     }
     
@@ -188,7 +208,17 @@ class AnimationsViewController: UIViewController, CellTitled {
         //  Note: You must use constraints to do this animation
         //  Reminder: You need to call something self.view in order to apply the new constraints
         //  Reminder: There is a small delay you need to account for
-        
+        let passwordContainerAnimation = UIViewPropertyAnimator(duration: 1.0, curve: .linear, animations: nil)
+        passwordContainerAnimation.addAnimations {
+            self.passwordContainerView.snp.remakeConstraints({ (view) in
+                view.top.equalTo(self.usernameContainerView.snp.bottom).offset(16)
+                view.centerX.equalTo(self.view.snp.centerX)
+                view.width.equalToSuperview().multipliedBy(0.8)
+                view.height.equalTo(44.0)
+            })
+            self.view.layoutIfNeeded()
+        }
+        passwordContainerAnimation.startAnimation()
     }
     
     internal func addSlidingAnimationToLoginButton() {
@@ -197,20 +227,35 @@ class AnimationsViewController: UIViewController, CellTitled {
         //  Note: You must use constraints to do this animation
         //  Reminder: You need to call something self.view in order to apply the new constraints
         //  Reminder: There is a small delay you need to account for
+        let loginButtonAnimation = UIViewPropertyAnimator(duration: 1.3, curve: .linear, animations: nil)
+        loginButtonAnimation.addAnimations {
+            self.loginButton.snp.remakeConstraints({ (view) in
+                view.top.equalTo(self.passwordContainerView.snp.bottom).offset(32.0)
+                view.centerX.equalTo(self.view.snp.centerX)
+            })
+            self.view.layoutIfNeeded()
+        }
+        loginButtonAnimation.startAnimation()
         
     }
     
     internal func startSlidingAnimations() {
 
         // 1. Begin the animations
-    
+//        UIView.animate(withDuration: 0.5, delay: 0.4, options: .autoreverse, animations: {
+//            self.usernameContainerView.center.x += self.view.bounds.width
+//        }, completion: nil)
     }
     
     // MARK:  Scale & Fade-In Logo
     internal func animateLogo() {
         // 1. Ensure the scale and alpha are set properly prior to animating
         
+        
         // 2. Add the animations
+        UIView.animate(withDuration: 1.5, animations: {
+            self.fireDatabaseLogo.alpha = 1.0
+        })
         
     }
     
@@ -224,10 +269,18 @@ class AnimationsViewController: UIViewController, CellTitled {
         bouncyViews.append(newView)
         
         // 2. add it to the view hierarchy
+        self.view.addSubview(newView)
         
         // 3. add constraints (make it 40.0 x 40.0)
+        newView.snp.makeConstraints({ (view) in
+            view.width.height.equalTo(40)
+            view.top.equalTo(loginButton.snp.bottom)
+            view.centerX.equalTo(self.view.snp.centerX)
+        })
     
         // 4. Add the view to your behaviors
+        
+        
         
         // 5. (Extra Credit) Add a random angular velocity (between 0 and 15 degrees) to the bounceBehavior
 
