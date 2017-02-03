@@ -9,7 +9,7 @@
 import UIKit
 import SnapKit
 
-class AnimationsViewController: UIViewController, CellTitled {
+class AnimationsViewController: UIViewController, CellTitled, UICollisionBehaviorDelegate {
     
     //   -------------------------------------------------------------------------------------------
     //                              DO NOT MODIFY THIS SECTION
@@ -159,18 +159,44 @@ class AnimationsViewController: UIViewController, CellTitled {
     
     
     // MARK: - Dynamics
+    
+    private func trackCollissions(_ behavior: UICollisionBehavior, beganContactFor item: UIDynamicItem, withBoundaryIdentifier identifier: NSCopying?, at p: CGPoint) {
+        print("Contact - \(identifier)")
+    }
+    
     internal func setupBehaviorsAndAnimators() {
         // 1. Instantiate your dynamicAnimator
+        
+        self.dynamicAnimator = UIDynamicAnimator(referenceView: view)
         
         // 2. Instantiate/setup your behaviors
         //      a. Collision
         
+        collisionBehavior = UICollisionBehavior(items: self.bouncyViews)
+        collisionBehavior?.collisionDelegate = self
+        
+        collisionBehavior?.addBoundary(withIdentifier: "bottom" as NSCopying, from: CGPoint(x: view.frame.minX, y: view.frame.maxY), to: CGPoint(x: view.frame.maxX, y: view.frame.maxY))
+        
         //      b. Gravity
+        
+        gravityBehavior = UIGravityBehavior(items: self.bouncyViews)
+        gravityBehavior?.gravityDirection = CGVector(dx: 0, dy: 1.5)
         
         //      c. Bounce
         
+        bounceBehavior = UIDynamicItemBehavior(items: bouncyViews)
+        bounceBehavior?.allowsRotation = true
+        bounceBehavior?.elasticity = 0.9
+        
         // 3. Add your behaviors to the dynamic animator
-
+        if let colliding = collisionBehavior,
+            let falling = gravityBehavior,
+            let bouncing = bounceBehavior {
+            colliding.translatesReferenceBoundsIntoBoundary = true
+            self.dynamicAnimator?.addBehavior(colliding)
+            self.dynamicAnimator?.addBehavior(falling)
+            self.dynamicAnimator?.addBehavior(bouncing)
+        }
     }
     
     // MARK: Slide Animations
