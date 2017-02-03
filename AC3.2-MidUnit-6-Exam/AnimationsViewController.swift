@@ -185,13 +185,11 @@ class AnimationsViewController: UIViewController, CellTitled {
     internal func setupBehaviorsAndAnimators() {
         // 1. Instantiate your dynamicAnimator
         self.dynamicAnimator = UIDynamicAnimator(referenceView: self.view)
-//        self.dynamicAnimator = nil
         
         // 2. Instantiate/setup your behaviors
         //      a. Collision
             collisionBehavior = UICollisionBehavior()
-//            let collisionBehavior = UICollisionBehavior()
-//                collisionBehavior.translatesReferenceBoundsIntoBoundary = true
+                collisionBehavior?.translatesReferenceBoundsIntoBoundary = true
         
         //      b. Gravity
                 gravityBehavior = UIGravityBehavior()
@@ -199,15 +197,14 @@ class AnimationsViewController: UIViewController, CellTitled {
         
         //      c. Bounce
             bounceBehavior = UIDynamicItemBehavior()
-//        let elasticBehavior = UIDynamicItemBehavior(items: [view])
-//        elasticBehavior.elasticity = 0.2
+            bounceBehavior?.elasticity = 0.2
 //        elasticBehavior.addAngularVelocity(CGFloat.pi / 6.0, for: items.first!)
 
         
         // 3. Add your behaviors to the dynamic animator
-//        self.dynamicAnimator?.addBehavior(collisionBehavior)
+        self.dynamicAnimator?.addBehavior(collisionBehavior!)
         self.dynamicAnimator?.addBehavior(gravityBehavior!)
-//       self.dynamicAnimator?.addBehavior(elasticBehavior)
+       self.dynamicAnimator?.addBehavior(bounceBehavior!)
 
     }
     
@@ -309,16 +306,12 @@ class AnimationsViewController: UIViewController, CellTitled {
                 
         }
         
-        newView.snp.removeConstraints()
-        
         
 //        // 4. Add the view to your behaviors
-//        bouncyViews.append(newView)
-//        for items in bouncyViews {
-//            gravityBehavior?.addItem(newView)
-        // Couldnt get the view to drop because of 'NSInternalInconsistencyException', reason: 'Invalid size {0, 0} for item <UIView: 0x7fb835e1bb60; frame = (0 0; 0 0); layer = <CALayer: 0x608000234d40>> in Dynamics'
-//        }
-    
+        self.view.layoutIfNeeded()
+        gravityBehavior?.addItem(newView)
+        bounceBehavior?.addItem(newView)
+        collisionBehavior?.addItem(newView)
         
         // 5. (Extra Credit) Add a random angular velocity (between 0 and 15 degrees) to the bounceBehavior
 
