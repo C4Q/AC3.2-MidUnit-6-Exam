@@ -16,8 +16,11 @@ var kvoContext = 0
 class DoubleVideoViewController: UIViewController, CellTitled, UINavigationControllerDelegate,UIImagePickerControllerDelegate {
     var titleForCell: String = "Double Video"
     
+    
+    //MARK: - Declarations
     @IBOutlet weak var videoContainerTop: UIView!
     @IBOutlet weak var videoContainerBottom: UIView!
+    
     var playerOne: AVPlayer? {
         willSet {
             if let oldValue = playerOne {
@@ -62,9 +65,9 @@ class DoubleVideoViewController: UIViewController, CellTitled, UINavigationContr
         }
     }
     
+    //MARK: - Actions
+    
     @IBAction func loadVideo(_ sender: UIButton) {
-        //self.videoContainerTop.layer.sublayers?.removeAll()
-        //self.videoContainerBottom.layer.sublayers?.removeAll()
         
         let imagePickerController = UIImagePickerController()
         imagePickerController.modalPresentationStyle = .currentContext
@@ -74,6 +77,9 @@ class DoubleVideoViewController: UIViewController, CellTitled, UINavigationContr
         imagePickerController.mediaTypes = [String(kUTTypeMovie)]
         self.present(imagePickerController, animated: true, completion: nil)
     }
+    
+    //MARK: - ImagePickerController Methods
+    
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         
         if info[UIImagePickerControllerMediaType] as! String == kUTTypeMovie as String {
@@ -97,27 +103,16 @@ class DoubleVideoViewController: UIViewController, CellTitled, UINavigationContr
                 
                 self.queueURL = nil
                 
-                let playerItem = AVPlayerItem(url: url)
-                let queuePlayer = AVPlayer(playerItem: playerItem)
-                
-                self.videoQueue.enQueue(queuePlayer)
+                self.videoQueue.enQueue(url)
             }
             
             if let urlOne = self.videoURLOne {
-                self.videoContainerTop.layer.sublayers?.removeAll()
                 self.videoURLOne = nil
-                
-                let playerItem = AVPlayerItem(url: urlOne)
-                self.playerOne = AVPlayer(playerItem: playerItem)
-                self.addLayers(for: self.playerOne!, in: self.videoContainerTop)
+                self.playerOne = self.addPlayerAndLayers(for: urlOne, in: self.videoContainerTop)
             }
             if let urlTwo = self.videoURLTwo {
-                self.videoContainerBottom.layer.sublayers?.removeAll()
                 self.videoURLTwo = nil
-                
-                let playerItem = AVPlayerItem(url: urlTwo)
-                self.playerTwo = AVPlayer(playerItem: playerItem)
-                self.addLayers(for: self.playerTwo!, in: self.videoContainerBottom)
+                self.playerTwo = self.addPlayerAndLayers(for: urlTwo, in: self.videoContainerBottom)
             }
         }
     }
@@ -136,15 +131,11 @@ class DoubleVideoViewController: UIViewController, CellTitled, UINavigationContr
             }
         }
         if context == &kvoContext, keyPath == #keyPath(AVPlayer.rate), let item = object as? AVPlayer {
-            if item.rate == 0, let player = videoQueue.deQueue() {
+            if item.rate == 0, let url = videoQueue.deQueue() {
                 if playerOne?.rate == 0 {
-                    self.addLayers(for: player, in: self.videoContainerTop)
-                    playerOne = player
-                    playerOne?.play()
+                    playerOne = self.addPlayerAndLayers(for: url, in: self.videoContainerTop)
                 } else if playerTwo?.rate == 0{
-                    self.addLayers(for: player, in: self.videoContainerBottom)
-                    playerTwo = player
-                    playerTwo?.play()
+                    playerTwo = self.addPlayerAndLayers(for: url, in: self.videoContainerBottom)
                 }
             }
         }
@@ -152,11 +143,14 @@ class DoubleVideoViewController: UIViewController, CellTitled, UINavigationContr
     
     //MARK: - Helper Functions
     
-    func addLayers (for player: AVPlayer, in view: UIView) {
+    func addPlayerAndLayers(for url: URL, in view: UIView) -> AVPlayer {
+        let playerItem = AVPlayerItem(url: url)
+        let player = AVPlayer(playerItem: playerItem)
         view.layer.sublayers?.removeAll()
         let playerLayer = AVPlayerLayer(player: player)
         playerLayer.frame = self.videoContainerBottom.bounds
         view.layer.addSublayer(playerLayer)
+        return player
     }
     
     func addobservers(to player: AVPlayer?) {
@@ -176,17 +170,18 @@ class DoubleVideoViewController: UIViewController, CellTitled, UINavigationContr
     }
 }
 
+
 class PlayerQueue {
-    private var queue = [AVPlayer]()
+    private var queue = [URL]()
     init() {
         queue = []
     }
     
-    func enQueue(_ player: AVPlayer) {
-        queue.append(player)
+    func enQueue(_ url: URL) {
+        queue.append(url)
     }
     
-    func deQueue() -> AVPlayer? {
+    func deQueue() -> URL? {
         guard queue.count > 0 else { return nil }
         return queue.removeFirst()
     }
