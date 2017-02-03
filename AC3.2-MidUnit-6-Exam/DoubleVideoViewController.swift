@@ -70,6 +70,7 @@ class DoubleVideoViewController: UIViewController, UIImagePickerControllerDelega
                 self.playerTop = AVPlayer(playerItem: playerItem)
                 self.playerLayerTop = AVPlayerLayer(player: self.playerTop)
                 
+                self.videoContainerTop.layer.sublayers?.removeAll()
                 self.videoContainerTop.layer.addSublayer(self.playerLayerTop)
                 self.playerLayerTop.frame = self.videoContainerTop.bounds
                 self.playerTop.play()
@@ -82,6 +83,7 @@ class DoubleVideoViewController: UIViewController, UIImagePickerControllerDelega
                 self.playerBottom = AVPlayer(playerItem: playerItem)
                 self.playerLayerBottom = AVPlayerLayer(player: self.playerBottom)
                 
+                self.videoContainerBottom.layer.sublayers?.removeAll()
                 self.videoContainerBottom.layer.addSublayer(self.playerLayerBottom)
                 self.playerLayerBottom.frame = self.videoContainerBottom.bounds
                 self.playerBottom.play()
