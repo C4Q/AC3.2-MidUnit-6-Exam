@@ -164,6 +164,7 @@ class AnimationsViewController: UIViewController, CellTitled {
         self.dynamicAnimator = UIDynamicAnimator(referenceView: self.view)
         
         
+        
         // 2. Instantiate/setup your behaviors
         //      a. Collision
         
