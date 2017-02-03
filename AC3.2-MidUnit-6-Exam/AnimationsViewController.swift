@@ -300,14 +300,29 @@ class AnimationsViewController: UIViewController, CellTitled, UICollisionBehavio
         
         // 2. add it to the view hierarchy
         
+        self.view.addSubview(newView)
+        
         // 3. add constraints (make it 40.0 x 40.0)
+        
+        newView.snp.makeConstraints { (view) in
+            view.centerX.equalTo(loginButton.snp.centerX)
+            view.centerY.equalTo(loginButton.snp.centerY).offset(drand48())
+            view.height.equalTo(40.0)
+            view.width.equalTo(40.0)
+        }
+        
+        self.view.setNeedsLayout()
+        self.view.layoutIfNeeded()
     
         // 4. Add the view to your behaviors
         
         // 5. (Extra Credit) Add a random angular velocity (between 0 and 15 degrees) to the bounceBehavior
-
+        
+        let randomAngle = CGFloat(arc4random_uniform(15))
+        let spin = UIDynamicItemBehavior(items: bouncyViews)
+        spin.addAngularVelocity(randomAngle, for: newView)
+        self.dynamicAnimator?.addBehavior(spin)
     }
-    
     
     // MARK: - ⛔️EXAM ENDS HERE⛔️ -
     
