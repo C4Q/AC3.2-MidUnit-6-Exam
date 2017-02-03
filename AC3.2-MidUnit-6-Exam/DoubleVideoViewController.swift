@@ -82,9 +82,24 @@ class DoubleVideoViewController: UIViewController, CellTitled, UIImagePickerCont
                 playerLayer.frame = videoContainerBottom.bounds
                 player.play()
             } else {
-               // do nothing
+                dismiss(animated: true) {
+                    if let url = self.movieURL {
+                        let player = AVPlayer(url: url)
+                        let playerController = AVPlayerViewController()
+                        playerController.player = player
+                    }
+                }
+                
+                let alertController = UIAlertController(title: "Hey there, pal!", message: "You can't watch a video right now.", preferredStyle: UIAlertControllerStyle.alert)
+                let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default) { (result : UIAlertAction) -> Void in
+                    print("OK")
+                }
+                alertController.addAction(okAction)
+                self.present(alertController, animated: true, completion: nil)
+                
+                print("you can't watch more than two videos")
+                return
             }
-            
         }
         
         // dismissing imagePickerController
