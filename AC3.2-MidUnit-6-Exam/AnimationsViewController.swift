@@ -283,13 +283,11 @@ class AnimationsViewController: UIViewController, CellTitled {
         gravityBehavior?.addItem(newView)
         collisionBehavior?.addItem(newView)
         bounceBehavior?.addItem(newView)
-//        collisionBehavior?.addItem(bouncyViews as! UIDynamicItem)
-//        bounceBehavior?.addItem(bouncyViews as! UIDynamicItem)
         // 5. (Extra Credit) Add a random angular velocity (between 0 and 15 degrees) to the bounceBehavior
         
-//         let range = CGFloat(random(min: 0, max: 15))
-//        bounceBehavior?.addAngularVelocity(range, for: UIView() as UIDynamicItem)
-//        
+        let range = CGFloat(random(min: 0, max: 15))
+        bounceBehavior?.addAngularVelocity(range, for: newView as UIDynamicItem)
+        
  
     }
     
