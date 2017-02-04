@@ -197,8 +197,7 @@ class AnimationsViewController: UIViewController, CellTitled {
             view.top.equalTo(fireDatabaseLogo.snp.bottom).offset(24.0)
             view.centerX.equalTo(self.view.snp.centerX)
         }
-        
-        UIView.animate(withDuration: 0.5, delay: 0, options: [], animations: { () -> Void in
+        UIView.animate(withDuration: 1.6, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1.0, options: [], animations: { () -> Void in
             self.view.layoutIfNeeded()
         })
         
