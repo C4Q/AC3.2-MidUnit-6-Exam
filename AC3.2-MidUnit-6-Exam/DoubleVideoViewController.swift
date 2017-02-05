@@ -118,8 +118,6 @@ class DoubleVideoViewController: UIViewController, CellTitled, UIImagePickerCont
 class MovieSwitcher {
     var top: AVPlayerLayer?
     var bottom: AVPlayerLayer?
-    var topContainer: CALayer?
-    var bottomContainer: CALayer?
     
     static let shared: MovieSwitcher = MovieSwitcher(top: nil, bottom: nil)
     
