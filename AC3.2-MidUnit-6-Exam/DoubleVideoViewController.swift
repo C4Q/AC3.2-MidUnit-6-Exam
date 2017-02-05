@@ -14,7 +14,7 @@ import AVFoundation
 class DoubleVideoViewController: UIViewController, CellTitled, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     var titleForCell: String = "Double Video"
     var movieURL: URL?
-    var movieSwitcher = MovieSwitcher.shared
+    var movieSwitcher = MovieSwitcher.mananger
     var container: UIView?
     
     @IBOutlet weak var videoContainerTop: UIView!
@@ -120,14 +120,21 @@ class DoubleVideoViewController: UIViewController, CellTitled, UIImagePickerCont
  version I submitted on exam day. So why bother?
  
  1. It reduces duplication in my code
- 2. Better naming -- don't have to memorize that index 0 is for the top container and index 1 is for the bottom container
- 3. Logic for switching is all in one place
+ 2. Better naming -- don't have to memorize that index 0 is for the top 
+ container and index 1 is for the bottom container
+ 3. Logic for switching is streamlined and is easier to read
+ 4. With a singleton, we have one place in both our code and in the actively 
+ running app handling which movie goes where.
+ 5. Fool-proofing -- can't accidently code our way into more instances even if 
+ we wanted to (having multiple instances of our tracker would be at 
+ cross-purposes to knowing which movie is in which container, which movie is 
+ currently playing, and which container has a movie currently inside it).
  */
 class MovieSwitcher {
     var top: AVPlayerLayer?
     var bottom: AVPlayerLayer?
     
-    static let shared: MovieSwitcher = MovieSwitcher(top: nil, bottom: nil)
+    static let mananger: MovieSwitcher = MovieSwitcher(top: nil, bottom: nil)
     
     private init(top: AVPlayerLayer?, bottom: AVPlayerLayer?) {
         self.top = top
