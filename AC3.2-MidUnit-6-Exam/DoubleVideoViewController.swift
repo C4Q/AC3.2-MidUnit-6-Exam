@@ -115,6 +115,14 @@ class DoubleVideoViewController: UIViewController, CellTitled, UIImagePickerCont
     }
 }
 
+/*
+ The singleton below is functionally identical to the array I was using on the
+ version I submitted on exam day. So why bother?
+ 
+ 1. It reduces duplication in my code
+ 2. Better naming -- don't have to memorize that index 0 is for the top container and index 1 is for the bottom container
+ 3. Logic for switching is all in one place
+ */
 class MovieSwitcher {
     var top: AVPlayerLayer?
     var bottom: AVPlayerLayer?
@@ -129,8 +137,6 @@ class MovieSwitcher {
     func add(newMovie: AVPlayerLayer) {
         if top == nil {
             top = newMovie
-        } else if bottom == nil {
-            bottom = newMovie
         } else {
             replace(newMovie: newMovie)
         }
@@ -140,9 +146,13 @@ class MovieSwitcher {
         if top?.player?.rate == 0 {
             top?.removeFromSuperlayer()
             top = newMovie
-        } else if bottom?.player?.rate == 0 {
-            bottom?.removeFromSuperlayer()
-            bottom = newMovie
+        } else {
+            if bottom == nil {
+                bottom = newMovie
+            } else if bottom?.player?.rate == 0 {
+                bottom?.removeFromSuperlayer()
+                bottom = newMovie
+            }
         }
     }
 }
