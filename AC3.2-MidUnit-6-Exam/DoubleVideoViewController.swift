@@ -14,7 +14,8 @@ import AVFoundation
 class DoubleVideoViewController: UIViewController, CellTitled, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     var titleForCell: String = "Double Video"
     var movieURL: URL?
-    var movies: [AVPlayerLayer] = [AVPlayerLayer]()
+    var movieSwitcher = MovieSwitcher.mananger
+    var container: UIView?
     
     @IBOutlet weak var videoContainerTop: UIView!
     @IBOutlet weak var videoContainerBottom: UIView!
@@ -69,42 +70,20 @@ class DoubleVideoViewController: UIViewController, CellTitled, UIImagePickerCont
             
             // looking at http://stackoverflow.com/questions/29000251/swift-resize-an-avplayerlayer-to-match-the-bounds-of-its-parent-container
             
-            movies.append(playerLayer)
+            movieSwitcher.add(newMovie: playerLayer)
             
-            if self.videoContainerTop.layer.sublayers == nil && self.videoContainerBottom.layer.sublayers == nil {
-                self.videoContainerTop.layer.addSublayer(playerLayer)
-                playerLayer.frame = videoContainerTop.bounds
-                player.play()
-            } else if videoContainerBottom.layer.sublayers == nil {
-                self.videoContainerBottom.layer.addSublayer(playerLayer)
-                playerLayer.frame = videoContainerBottom.bounds
-                player.play()
+            if movieSwitcher.top == playerLayer {
+                container = videoContainerTop
+            } else if movieSwitcher.bottom == playerLayer {
+                container = videoContainerBottom
             } else {
-                let top = movies[0]
-                let bottom = movies[1]
-                
-                if top.player?.rate != 0 && bottom.player?.rate == 0 {
-                    bottom.removeFromSuperlayer()
-                    movies[1] = playerLayer
-                    self.videoContainerBottom.layer.addSublayer(playerLayer)
-                    playerLayer.frame = videoContainerBottom.bounds
-                    player.play()
-                } else if top.player?.rate == 0 && bottom.player?.rate != 0 {
-                    top.removeFromSuperlayer()
-                    movies[0] = playerLayer
-                    self.videoContainerTop.layer.addSublayer(playerLayer)
-                    playerLayer.frame = videoContainerTop.bounds
-                    player.play()
-                } else {
-                    dismiss(animated: true) {
+                dismiss(animated: true) {
                     if let url = self.movieURL {
                         let player = AVPlayer(url: url)
                         let playerController = AVPlayerViewController()
                         playerController.player = player
                     }
                 }
-                
-                // taken from my emojiCard project: https://github.com/martyav/EmojiDeck/blob/master/EmojiDeck/EmojiCardViewController.swift
                 
                 let alertController = UIAlertController(title: "You can't watch a video right now.", message: "Wait until one ends first!", preferredStyle: UIAlertControllerStyle.alert)
                 let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default) { (result : UIAlertAction) -> Void in
@@ -115,9 +94,15 @@ class DoubleVideoViewController: UIViewController, CellTitled, UIImagePickerCont
                 
                 print("you can't watch more than two videos")
                 return
+                // alert
+            }
+            
+            if let currentContainer = self.container {
+                currentContainer.layer.addSublayer(playerLayer)
+                playerLayer.frame = currentContainer.bounds
+                player.play()
             }
         }
-    }
         
         // dismissing imagePickerController
         dismiss(animated: true) {
@@ -128,5 +113,53 @@ class DoubleVideoViewController: UIViewController, CellTitled, UIImagePickerCont
             }
         }
     }
+}
+
+/*
+ The singleton below is functionally identical to the array I was using on the
+ version I submitted on exam day. So why bother?
+ 
+ 1. It reduces duplication in my code
+ 2. Better naming -- don't have to memorize that index 0 is for the top 
+ container and index 1 is for the bottom container
+ 3. Logic for switching is streamlined and is easier to read
+ 4. With a singleton, we have one place in both our code and in the actively 
+ running app handling which movie goes where.
+ 5. Fool-proofing -- can't accidently code our way into more instances even if 
+ we wanted to (having multiple instances of our tracker would be at 
+ cross-purposes to knowing which movie is in which container, which movie is 
+ currently playing, and which container has a movie currently inside it).
+ */
+class MovieSwitcher {
+    var top: AVPlayerLayer?
+    var bottom: AVPlayerLayer?
     
+    static let mananger: MovieSwitcher = MovieSwitcher(top: nil, bottom: nil)
+    
+    private init(top: AVPlayerLayer?, bottom: AVPlayerLayer?) {
+        self.top = top
+        self.bottom = bottom
+    }
+    
+    func add(newMovie: AVPlayerLayer) {
+        if top == nil {
+            top = newMovie
+        } else {
+            replace(newMovie: newMovie)
+        }
+    }
+    
+    func replace(newMovie: AVPlayerLayer) {
+        if top?.player?.rate == 0 {
+            top?.removeFromSuperlayer()
+            top = newMovie
+        } else {
+            if bottom == nil {
+                bottom = newMovie
+            } else if bottom?.player?.rate == 0 {
+                bottom?.removeFromSuperlayer()
+                bottom = newMovie
+            }
+        }
+    }
 }
