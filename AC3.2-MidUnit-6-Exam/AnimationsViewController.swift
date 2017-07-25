@@ -143,6 +143,7 @@ class AnimationsViewController: UIViewController, CellTitled {
         _ = self.bouncyViews.map { $0.removeFromSuperview() }
         _ = [fireDatabaseLogo, usernameContainerView, passwordContainerView, loginButton].map{ $0.isHidden = true }
         self.fireDatabaseLogo.alpha = 0.0
+        
     }
     
     private func removeConstraints() {
@@ -233,7 +234,7 @@ class AnimationsViewController: UIViewController, CellTitled {
         springPropertyAnimator?.addAnimations {
             self.view.layoutIfNeeded()
         }
-        
+
     }
     
     internal func startSlidingAnimations() {
